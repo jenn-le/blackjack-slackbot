@@ -7,7 +7,7 @@ class Dealer(object):
         self.hand = []
         self.players = []
         self.table = []
-        self.in_progress = false
+        self.in_progress = False
         self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # Admin commands
