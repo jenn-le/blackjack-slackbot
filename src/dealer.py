@@ -20,6 +20,7 @@ class Dealer(object):
                 users = api_call.get('members')
                 for user in users:
                     if 'name' in user and user.get('name') in command:
+                        exists = False
                         for player in self.players:
 
                             # Send a message if the player is already in the list
@@ -27,18 +28,19 @@ class Dealer(object):
                                 response = user.get('name') + " has already been added to the player list."
                                 self.slack_client.api_call("chat.postMessage", text=response,
                                                             channel="D4TU5BYN6", as_user=True)
-                                continue
+                                exists = True
 
                         # If the player wasn't in the list, add them
-                        self.players.append({"name": user.get('name'),
-                                             "id": user.get('id'),
-                                             "balance": 500,
-                                             "hand": []
-                                            })
+                        if exists == False
+                            self.players.append({"name": user.get('name'),
+                                                 "id": user.get('id'),
+                                                 "balance": 500,
+                                                 "hand": []
+                                                })
 
-                        response = user.get('name') + " has been added the player list."
-                        self.slack_client.api_call("chat.postMessage", text=response,
-                                                    channel="D4TU5BYN6", as_user=True)
+                            response = user.get('name') + " has been added to the player list."
+                            self.slack_client.api_call("chat.postMessage", text=response,
+                                                        channel="D4TU5BYN6", as_user=True)
 
         actions = {"addplayer": addplayer
                 #    "change_balance": change_balance
