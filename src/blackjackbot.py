@@ -2,25 +2,26 @@ import os
 import time
 from slackclient import SlackClient
 
-# blackjackbot's ID as an environment variable
-BOT_ID = os.environ.get("BOT_ID")
+# commands that can be called at any time
+actions = ['show',
+           'play']
 
-# constants
-AT_BOT = "<@" + str(BOT_ID) + ">"
-EXAMPLE_COMMAND = "do"
+# commands used while a hand is in progress
+gamecommands = ['bet',
+                'hit',
+                'double down',
+                'stay']
 
 # instantiate Slack
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, channel):
-    """
-        Receives commands directed at the bot and determines if they
-        are valid commands. If so, then acts on the commands. If not,
-        returns back what it needs for clarification.
-    """
-    response = "Not sure what you mean. Use the *" + EXAMPLE_COMMAND + \
-               "* command with numbers, delimited by spaces."
-    if command.startswith(EXAMPLE_COMMAND):
+    response = "Not sure what you mean. Please refer to the pinned post for " + \
+                "instructions on how to play."
+
+    # Show command - will show the scoreboard, your chips, your hand, or the current
+    # table based on the 2nd part of the command
+    if command.startswith(actions[0]):
         response = "Sure...write some more code then I can do that!"
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
