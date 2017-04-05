@@ -19,7 +19,7 @@ class Dealer(object):
         actions[command.split(' ', 1)[0]](self, command)
 
     def addplayer(self, command):
-        api_call = slack_client.api_call("users.list")
+        api_call = blackjackbot.slack_client.api_call("users.list")
         if api_call.get('ok'):
 
             # retrieve all users so we can add the desired ones to the players list
@@ -31,7 +31,7 @@ class Dealer(object):
                         # Send a message if the player is already in the list
                         if player.get('name') == user.get('name'):
                             response = user.get('name') + " has already been added to the player list."
-                            slack_client.api_call("chat.postMessage", text=response, as_user=True)
+                            blackjackbot.slack_client.api_call("chat.postMessage", text=response, as_user=True)
                             continue
 
                     # If the player wasn't in the list, add them
@@ -42,7 +42,7 @@ class Dealer(object):
                                         })
 
                     response = user.get('name') + " has been added the player list."
-                    slack_client.api_call("chat.postMessage", text=response, as_user=True)
+                    blackjackbot.slack_client.api_call("chat.postMessage", text=response, as_user=True)
 
     # def change_balance(self, command):
     #
