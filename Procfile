@@ -1,1 +1,1 @@
-web: python src/blackjackbot.py
+worker: python src/blackjackbot.py
