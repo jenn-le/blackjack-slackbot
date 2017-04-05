@@ -18,7 +18,7 @@ slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, user, channel):
     # Admin commands that only I can send
-    if command.split(' ', 1)[0] == "admin" and user = "U4NAVCQBA":
+    if command.split(' ', 1)[0] == "admin" and user == "U4NAVCQBA":
         dealer.admin_do(command)
 
     # Blackjack commands
