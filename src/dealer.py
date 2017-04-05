@@ -57,7 +57,7 @@ class Dealer(object):
                                                 channel="D4TU5BYN6", as_user=True)
 
         # Calling the appropriate function
-        actions = {"addplayer": addplayer
+        actions = {"addplayer": addplayer,
                    "change_balance": change_balance
                   }
 
