@@ -44,14 +44,14 @@ class Dealer(object):
 
         def change_balance(self, command):
             for player in self.players:
-                if player.get('name') == command.split(' ')[1]:
-                    player['balance'] += int(command.split(' ')[2])
+                if player.get('name') == command.split(' ')[2]:
+                    player['balance'] += int(command.split(' ')[3])
 
                     changed = "added"
-                    if int(command.split(' ')[2]) < 0:
+                    if int(command.split(' ')[3]) < 0:
                         changed = "removed"
 
-                    response = int(command.split(' ')[2]) + " coins have been " + \
+                    response = int(command.split(' ')[3]) + " coins have been " + \
                                 changed + " to " + player.get('name') + "\'s account"
                     self.slack_client.api_call("chat.postMessage", text=response,
                                                 channel="D4TU5BYN6", as_user=True)
