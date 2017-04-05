@@ -6,11 +6,11 @@ from admin import Admin
 
 # possible commands, dealer will handle what to do with them
 blackjack_actions = ['show',
-                     'bet',
+                     ''''bet',
                      'play',
                      'hit',
                      'double',
-                     'stay']
+                     'stay'''']
 
 
 # admin user ids
@@ -35,9 +35,7 @@ def handle_command(command, user, channel):
 
     # Blackjack commands
     elif command.split(' ', 1)[0] in blackjack_actions:
-        response = "The command is: " + command.split(' ', 1)[0]
-        slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True)
+        dealer.do(command, user, channel)
 
 
 def parse_slack_output(slack_rtm_output):
