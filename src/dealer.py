@@ -38,8 +38,8 @@ class Dealer(object):
                     slack_client.api_call("chat.postMessage", text=response, as_user=True)
 
     def admin_do(self, command):
-        actions = {"addplayer": addplayer,
-                   "change_balance": change_balance
+        actions = {"addplayer": addplayer
+                #    "change_balance": change_balance
                   }
 
         actions[command.split(' ', 1)[0]](self, command)
