@@ -2,15 +2,13 @@ import os
 import time
 from slackclient import SlackClient
 
-# commands that can be called at any time
+# possible commands, dealer will handle what to do with them
 actions = ['show',
-           'play']
-
-# commands used while a hand is in progress
-gamecommands = ['bet',
-                'hit',
-                'double down',
-                'stay']
+           'play',
+           'bet',
+           'hit',
+           'double',
+           'stay']
 
 # instantiate Slack
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
@@ -21,25 +19,18 @@ def handle_command(command, channel):
 
     # Show command - will show the scoreboard, your chips, your hand, or the current
     # table based on the 2nd part of the command
-    if command.startswith(actions[0]):
-        response = "Sure...write some more code then I can do that!"
+    if command.split(' ', 1)[0] in actions:
+        response = "The command is: " + command.split(' ', 1)[0]
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
 
 def parse_slack_output(slack_rtm_output):
-    """
-        The Slack Real Time Messaging API is an events firehose.
-        this parsing function returns None unless a message is
-        directed at the Bot, based on its ID.
-    """
     output_list = slack_rtm_output
     if output_list and len(output_list) > 0:
         for output in output_list:
-            if output and 'text' in output and AT_BOT in output['text']:
-                # return text after the @ mention, whitespace removed
-                return output['text'].split(AT_BOT)[1].strip().lower(), \
-                       output['channel']
+            if output and 'text' in output:
+                return output['text'], output['channel']
     return None, None
 
 
