@@ -1,6 +1,5 @@
 import os
 from slackclient import SlackClient
-from blackjackbot import slack_client
 
 class Dealer(object):
     def __init__(self):
@@ -9,6 +8,7 @@ class Dealer(object):
         self.players = []
         self.table = []
         self.in_progress = false
+        self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # Admin commands
     def admin_do(self, command):
