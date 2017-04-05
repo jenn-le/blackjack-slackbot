@@ -14,7 +14,11 @@ class Dealer(object):
     def do(self, command, user, channel):
         # Functions for the general commands
         def show(self, command, user, channel):
-            if command.split(' ')[1] == "scoreboard":
+            if command.split(' ').length < 2:
+                response = "The valid commands for 'show' are scoreboard and hand"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=channel, as_user=True)
+            elif command.split(' ')[1] == "scoreboard":
                 response = "Temp scoreboard response"
 
 
