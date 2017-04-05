@@ -13,9 +13,11 @@ actions = ['show',
 # instantiate Slack
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
-def handle_command(command, channel):
+def handle_command(command, user, channel):
     if command.split(' ', 1)[0] in actions:
-        response = "The command is: " + command.split(' ', 1)[0]
+        response = "The command is: " + command.split(' ', 1)[0] \
+                    + " on channel: " + channel \
+                    + " from user: " + user
         slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
@@ -25,8 +27,8 @@ def parse_slack_output(slack_rtm_output):
     if output_list and len(output_list) > 0:
         for output in output_list:
             if output and 'text' in output:
-                return output['text'], output['channel']
-    return None, None
+                return output['text'], output['user'], output['channel']
+    return None, None, None
 
 
 def main():
