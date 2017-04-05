@@ -1,23 +1,29 @@
 import os
 import time
 from slackclient import SlackClient
+from dealer import Dealer
 
 # possible commands, dealer will handle what to do with them
-actions = ['show',
-           'play',
-           'bet',
-           'hit',
-           'double',
-           'stay']
+blackjack_actions = ['show',
+                     'bet',
+                     'play',
+                     'hit',
+                     'double',
+                     'stay']
+
+dealer = Dealer()
 
 # instantiate Slack
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, user, channel):
-    if command.split(' ', 1)[0] in actions:
-        response = "The command is: " + command.split(' ', 1)[0] \
-                    + " on channel: " + channel \
-                    + " from user: " + user
+    # Admin commands that only I can send
+    if command.split(' ', 1)[0] == "admin" and user = "U4NAVCQBA":
+        dealer.admin_do(command)
+
+    # Blackjack commands
+    elif command.split(' ', 1)[0] in blackjack_actions:
+        response = "The command is: " + command.split(' ', 1)[0]
         slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
@@ -34,7 +40,7 @@ def parse_slack_output(slack_rtm_output):
 def main():
     READ_WEBSOCKET_DELAY = 1 # 1 second delay between reading from firehose
     if slack_client.rtm_connect():
-        print("StarterBot connected and running!")
+        print("BlackjackBot connected and running!")
         while True:
             command, user, channel = parse_slack_output(slack_client.rtm_read())
             if command and channel:
