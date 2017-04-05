@@ -30,7 +30,7 @@ def handle_command(command, user, channel):
 
     # Blackjack commands
     elif command.split(' ', 1)[0] in blackjack_actions:
-        response = "The command is: " + command.split(' ', 1)[0] + ", channel: " + channel
+        response = "The command is: " + command.split(' ', 1)[0]
         slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
