@@ -38,21 +38,52 @@ class Dealer(object):
                                                  "hand": []
                                                 })
 
-                            response = user.get('name') + " has been added to the player list."
+                            response = user.get('name') + " has been added to the player list"
                             self.slack_client.api_call("chat.postMessage", text=response,
                                                         channel="D4TU5BYN6", as_user=True)
 
+        def change_balance(self, command):
+            for player in self.players:
+                if player.get('name') == command.split(' ')[1]:
+                    player.get('balance') += int(command.split(' ')[2])
+
+                    changed = "added"
+                    if int(command.split(' ')[2]) < 0:
+                        changed = "removed"
+
+                    response = int(command.split(' ')[2]) + " coins have been " + \
+                                changed + " to " + player.get('name') + "\'s account"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel="D4TU5BYN6", as_user=True)
+
+        # Calling the appropriate function
         actions = {"addplayer": addplayer
-                #    "change_balance": change_balance
+                   "change_balance": change_balance
                   }
 
         actions[command.split(' ')[1]](self, command)
 
-    # def change_balance(self, command):
-    #
-    #
-    # The calling the general functions
+    # # The calling the general game functions
     # def do(self, command, user, channel):
+    #     # Functions for the general commands
+    #     def show(self, command, user, channel):
+    #
+    #
+    #     def bet(self, command, user, channel):
+    #
+    #
+    #     def play(self, command, user, channel):
+    #
+    #
+    #     def hit(self, command, user, channel):
+    #
+    #
+    #     def double(self, command, user, channel):
+    #
+    #
+    #     def stay(self, command, user, channel):
+    # 
+    #     # Calling the appropriate function
     #     actions = {"show": show,
     #                "bet": bet,
     #                "play": play,
@@ -62,24 +93,6 @@ class Dealer(object):
     #               }
     #
     #     actions[command.split(' ', 1)[0]](self, command, user, channel)
-    #
-    # # Functions for the general commands
-    # def show(self, command, user, channel):
-    #
-    #
-    # def bet(self, command, user, channel):
-    #
-    #
-    # def play(self, command, user, channel):
-    #
-    #
-    # def hit(self, command, user, channel):
-    #
-    #
-    # def double(self, command, user, channel):
-    #
-    #
-    # def stay(self, command, user, channel):
     #
     #
     # # Game management functions

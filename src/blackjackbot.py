@@ -11,8 +11,11 @@ blackjack_actions = ['show',
                      'double',
                      'stay']
 
+
+# admin user ids
 admin_ids = ['U4NAVCQBA']
 
+# instantiate the dealer
 dealer = Dealer()
 
 # instantiate Slack
@@ -40,7 +43,7 @@ def parse_slack_output(slack_rtm_output):
     if output_list and len(output_list) > 0:
         for output in output_list:
             if output and 'text' in output:
-                return output['text'], output['user'], output['channel']
+                return output['text'].downcase, output['user'], output['channel']
     return None, None, None
 
 
