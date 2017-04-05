@@ -31,7 +31,7 @@ class Dealer(object):
                                 exists = True
 
                         # If the player wasn't in the list, add them
-                        if exists == False
+                        if exists == False:
                             self.players.append({"name": user.get('name'),
                                                  "id": user.get('id'),
                                                  "balance": 500,
@@ -82,7 +82,7 @@ class Dealer(object):
     #
     #
     #     def stay(self, command, user, channel):
-    # 
+    #
     #     # Calling the appropriate function
     #     actions = {"show": show,
     #                "bet": bet,
