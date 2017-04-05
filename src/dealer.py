@@ -26,7 +26,7 @@ class Dealer(object):
                             if player.get('name') == user.get('name'):
                                 response = user.get('name') + " has already been added to the player list."
                                 self.slack_client.api_call("chat.postMessage", text=response,
-                                                            channel="D4TU5BYN6" as_user=True)
+                                                            channel="D4TU5BYN6", as_user=True)
                                 continue
 
                         # If the player wasn't in the list, add them
@@ -38,7 +38,7 @@ class Dealer(object):
 
                         response = user.get('name') + " has been added the player list."
                         self.slack_client.api_call("chat.postMessage", text=response,
-                                                    channel="D4TU5BYN6" as_user=True)
+                                                    channel="D4TU5BYN6", as_user=True)
 
         actions = {"addplayer": addplayer
                 #    "change_balance": change_balance
