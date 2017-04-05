@@ -1,4 +1,5 @@
 import os
+import re
 from slackclient import SlackClient
 
 class Admin(object):
@@ -41,17 +42,21 @@ class Admin(object):
 
         def change_balance(self, command):
             response = "This person isn't in the player list"
+            digits = re.compile('^\d*?')
 
-            for player in self.dealer.players:
-                if player.get('name') == command.split(' ')[2]:
-                    player['balance'] += int(command.split(' ')[3])
+            if p.match(command.split(' ')[3]):
+                for player in self.dealer.players:
+                    if player.get('name') == command.split(' ')[2]:
+                        player['balance'] += int(command.split(' ')[3])
 
-                    changed = "added"
-                    if int(command.split(' ')[3]) < 0:
-                        changed = "removed"
+                        changed = "added"
+                        if int(command.split(' ')[3]) < 0:
+                            changed = "removed"
 
-                    response = command.split(' ')[3] + " coins have been " + \
-                                changed + " to " + player.get('name') + "\'s account"
+                        response = command.split(' ')[3] + " coins have been " + \
+                                    changed + " to " + player.get('name') + "\'s account"
+            else:
+                response = "Enter in a valid number to change the balance by"
 
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel="D4TU5BYN6", as_user=True)
