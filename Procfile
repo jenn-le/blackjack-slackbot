@@ -1,1 +1,1 @@
-web: python blackjackbot.py
+web: python src/blackjackbot.py
