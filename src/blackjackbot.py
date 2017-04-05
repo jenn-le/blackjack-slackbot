@@ -2,6 +2,7 @@ import os
 import time
 from slackclient import SlackClient
 from dealer import Dealer
+from admin import Admin
 
 # possible commands, dealer will handle what to do with them
 blackjack_actions = ['show',
@@ -17,6 +18,7 @@ admin_ids = ['U4NAVCQBA']
 
 # instantiate the dealer
 dealer = Dealer()
+admin = Admin(dealer)
 
 # instantiate Slack
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
@@ -25,7 +27,7 @@ def handle_command(command, user, channel):
     # Admin commands that only I can send
     if command.split(' ', 1)[0] == "admin":
         if user in admin_ids:
-            dealer.admin_do(command)
+            admin.admin_do(command)
         else:
             response = "You do not have permission to execute this command"
             slack_client.api_call("chat.postMessage", channel=channel,
