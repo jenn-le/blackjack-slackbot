@@ -5,12 +5,12 @@ from dealer import Dealer
 from admin import Admin
 
 # possible commands, dealer will handle what to do with them
-blackjack_actions = ['show']
-                    #  'bet',
-                    #  'play',
-                    #  'hit',
-                    #  'double',
-                    #  'stay']
+blackjack_actions = ['!show']
+                    #  '!bet',
+                    #  '!play',
+                    #  '!hit',
+                    #  '!double',
+                    #  '!stay']
 
 
 # admin user ids
@@ -25,7 +25,7 @@ slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, user, channel):
     # Admin commands that only I can send
-    if command.split(' ', 1)[0] == "admin":
+    if command.split(' ', 1)[0] == "!admin":
         if user in admin_ids:
             admin.admin_do(command)
         else:

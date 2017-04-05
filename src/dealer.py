@@ -49,12 +49,12 @@ class Dealer(object):
         # def stay(self, command, user, channel):
 
         # Calling the appropriate function
-        actions = {"show": show
-                #    "bet": bet,
-                #    "play": play,
-                #    "hit": hit,
-                #    "double": double,
-                #    "stay": stay
+        actions = {"!show": show
+                #    "!bet": bet,
+                #    "!play": play,
+                #    "!hit": hit,
+                #    "!double": double,
+                #    "!stay": stay
                   }
 
         actions[command.split(' ', 1)[0]](self, command, user, channel)
