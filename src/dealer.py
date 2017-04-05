@@ -45,7 +45,7 @@ class Dealer(object):
         def change_balance(self, command):
             for player in self.players:
                 if player.get('name') == command.split(' ')[1]:
-                    player.get('balance') += int(command.split(' ')[2])
+                    player['balance'] += int(command.split(' ')[2])
 
                     changed = "added"
                     if int(command.split(' ')[2]) < 0:
