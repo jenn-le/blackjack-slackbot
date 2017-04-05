@@ -14,14 +14,9 @@ actions = ['show',
 slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
 def handle_command(command, channel):
-    response = "Not sure what you mean. Please refer to the pinned post for " + \
-                "instructions on how to play."
-
-    # Show command - will show the scoreboard, your chips, your hand, or the current
-    # table based on the 2nd part of the command
     if command.split(' ', 1)[0] in actions:
         response = "The command is: " + command.split(' ', 1)[0]
-    slack_client.api_call("chat.postMessage", channel=channel,
+        slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
 
