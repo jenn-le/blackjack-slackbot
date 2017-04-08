@@ -44,7 +44,7 @@ class Admin(object):
             response = "This person isn't in the player list"
             digits = re.compile('^\d*?')
 
-            if p.match(command.split(' ')[3]):
+            if digits.match(command.split(' ')[3]):
                 for player in self.dealer.players:
                     if player.get('name') == command.split(' ')[2]:
                         player['balance'] += int(command.split(' ')[3])
