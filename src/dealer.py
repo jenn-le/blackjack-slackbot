@@ -21,20 +21,18 @@ class Dealer(object):
             elif command.split(' ')[1] == "scoreboard":
                 response = "*Scoreboard*\n===================================================\n\n"
 
-                # Only sorts the scores if the players list isn't empty
+                # Only sorts the scores if the players list isn't one person long
                 if len(self.players) > 1:
                     for index in range(1,len(self.players)):
-                        coins = self.players[index]
+                        coins = self.players[index].get('balance')
                         position = index
 
-                        while position > 0 and self.players[position-1] > coins:
-                            self.players[position] = self.players[position-1]
+                        while position > 0 and self.players[position-1].get('balance') > coins:
+                            self.players[position-1], self.players[position] = self.players[position-1], self.players[position]
                             position -= 1
 
-                        self.players[position].get('balance') = coins
-
                 for player in self.players:
-                    response += ""
+                    response += player.get('name') + ": " + player.get('balance')
 
 
                 self.slack_client.api_call("chat.postMessage", text=response,
