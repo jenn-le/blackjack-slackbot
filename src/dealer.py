@@ -28,8 +28,10 @@ class Dealer(object):
                         position = index
 
                         while position > 0 and self.players[position-1].get('balance') > coins:
-                            self.players[position-1], self.players[position] = self.players[position], self.players[position - 1]
+                            self.players[position - 1], self.players[position] = self.players[position], self.players[position - 1]
                             position -= 1
+
+                    self.players = list(reversed(self.players))
 
                 for player in self.players:
                     response += "\n" + player.get('name') + ": " + str(player.get('balance'))
