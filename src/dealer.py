@@ -19,7 +19,7 @@ class Dealer(object):
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
             elif command.split(' ')[1] == "scoreboard":
-                response = "*Scoreboard*\n===================================================\n\n"
+                response = "*Scoreboard*\n===================================================\n"
 
                 # Only sorts the scores if the players list isn't one person long
                 if len(self.players) > 1:
@@ -28,11 +28,11 @@ class Dealer(object):
                         position = index
 
                         while position > 0 and self.players[position-1].get('balance') > coins:
-                            self.players[position-1], self.players[position] = self.players[position-1], self.players[position]
+                            self.players[position-1], self.players[position] = self.players[position], self.players[position - 1]
                             position -= 1
 
                 for player in self.players:
-                    response += player.get('name') + ": " + str(player.get('balance'))
+                    response += "\n" + player.get('name') + ": " + str(player.get('balance'))
 
 
                 self.slack_client.api_call("chat.postMessage", text=response,
