@@ -32,7 +32,7 @@ class Dealer(object):
                             position -= 1
 
                 for player in self.players:
-                    response += player.get('name') + ": " + player.get('balance')
+                    response += player.get('name') + ": " + str(player.get('balance'))
 
 
                 self.slack_client.api_call("chat.postMessage", text=response,
