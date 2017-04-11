@@ -27,7 +27,7 @@ def handle_command(command, user, channel):
     # Admin commands that only I can send
     if command.split(' ', 1)[0] == "!admin":
         if user in admin_ids:
-            admin.admin_do(command)
+            admin.admin_do(command, user)
         else:
             response = "You do not have permission to execute this command"
             slack_client.api_call("chat.postMessage", channel=channel,

@@ -9,8 +9,8 @@ class Admin(object):
         self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # Admin commands
-    def admin_do(self, command):
-        def addplayer(self, command):
+    def admin_do(self, command, user):
+        def addplayer(self, command, user):
             api_call = self.slack_client.api_call("users.list")
             if api_call.get('ok'):
 
@@ -25,7 +25,7 @@ class Admin(object):
                             if player.get('name') == user.get('name'):
                                 response = user.get('name') + " has already been added to the player list."
                                 self.slack_client.api_call("chat.postMessage", text=response,
-                                                            channel="D4TU5BYN6", as_user=True)
+                                                            channel=user, as_user=True)
                                 exists = True
 
                         # If the player wasn't in the list, add them
@@ -33,38 +33,61 @@ class Admin(object):
                             self.dealer.players.append({"name": user.get('name'),
                                                         "id": user.get('id'),
                                                         "balance": 500,
-                                                        "hand": []
+                                                        "bet": None,
+                                                        "hand": [],
+                                                        "status": None
                                                         })
 
                             response = user.get('name') + " has been added to the player list"
                             self.slack_client.api_call("chat.postMessage", text=response,
-                                                        channel="D4TU5BYN6", as_user=True)
+                                                        channel=user, as_user=True)
 
-        def change_balance(self, command):
+        def change_balance(self, command, user):
             response = "This person isn't in the player list"
             digits = re.compile('^\d*?')
 
-            if digits.match(command.split(' ')[3]):
+            if len(command.split(' ')) != 3:
+                response = "Please enter the command in this format:\n!admin change_balance {player_name} {coins}"
+            elif digits.match(command.split(' ')[3]):
                 for player in self.dealer.players:
                     if player.get('name') == command.split(' ')[2]:
                         player['balance'] += int(command.split(' ')[3])
 
-                        changed = "added"
+                        changed = "added to "
                         if int(command.split(' ')[3]) < 0:
-                            changed = "removed"
+                            changed = "removed from "
 
                         response = command.split(' ')[3] + " coins have been " + \
-                                    changed + " to " + player.get('name') + "\'s account"
+                                    changed + player.get('name') + "\'s account"
             else:
                 response = "Enter in a valid number to change the balance by"
 
             self.slack_client.api_call("chat.postMessage", text=response,
-                                        channel="D4TU5BYN6", as_user=True)
+                                        channel=user, as_user=True)
 
+        def normal():
+            if self.dealer.hard == False:
+                response = "Game difficulty is already set to normal"
+            else:
+                self.dealer.hard = False
+                response = "Game difficulty is now set to normal"
+            self.slack_client.api_call("chat.postMessage", text=response,
+                                        channel=user, as_user=True)
+
+        def hard():
+            if self.dealer.hard == True:
+                response = "Game difficulty is already set to hard"
+            else:
+                self.dealer.hard = True
+                response = "Game difficulty is now set to hard"
+            self.slack_client.api_call("chat.postMessage", text=response,
+                                        channel=user, as_user=True)
 
         # Calling the appropriate function
         actions = {"addplayer": addplayer,
-                   "change_balance": change_balance
+                   "change_balance": change_balance,
+                   "normal": normal,
+                   "hard": hard
                   }
 
         actions[command.split(' ')[1]](self, command)
