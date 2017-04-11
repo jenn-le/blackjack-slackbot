@@ -65,7 +65,7 @@ class Admin(object):
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
-        def normal():
+        def normal(self, command, user):
             if self.dealer.hard == False:
                 response = "Game difficulty is already set to normal"
             else:
@@ -74,7 +74,7 @@ class Admin(object):
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
-        def hard():
+        def hard(self, command, user):
             if self.dealer.hard == True:
                 response = "Game difficulty is already set to hard"
             else:
@@ -90,4 +90,4 @@ class Admin(object):
                    "hard": hard
                   }
 
-        actions[command.split(' ')[1]](self, command)
+        actions[command.split(' ')[1]](self, command, user)
