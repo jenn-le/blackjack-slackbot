@@ -46,7 +46,7 @@ class Admin(object):
             response = "This person isn't in the player list"
             digits = re.compile('^\d*?')
 
-            if len(command.split(' ')) != 3:
+            if len(command.split(' ')) != 4:
                 response = "Please enter the command in this format:\n!admin change_balance {player_name} {coins}"
             elif digits.match(command.split(' ')[3]):
                 for player in self.dealer.players:
@@ -71,6 +71,7 @@ class Admin(object):
             else:
                 self.dealer.hard = False
                 response = "Game difficulty is now set to normal"
+
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
@@ -80,6 +81,7 @@ class Admin(object):
             else:
                 self.dealer.hard = True
                 response = "Game difficulty is now set to hard"
+
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
