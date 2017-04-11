@@ -16,29 +16,29 @@ class Admin(object):
 
                 # retrieve all users so we can add the desired ones to the players list
                 users = api_call.get('members')
-                for user in users:
-                    if 'name' in user and user.get('name') in command:
+                for person in users:
+                    if 'name' in person and person.get('name') in command:
                         exists = False
                         for player in self.dealer.players:
 
                             # Send a message if the player is already in the list
-                            if player.get('name') == user.get('name'):
-                                response = user.get('name') + " has already been added to the player list."
+                            if player.get('name') == person.get('name'):
+                                response = person.get('name') + " has already been added to the player list."
                                 self.slack_client.api_call("chat.postMessage", text=response,
                                                             channel=user, as_user=True)
                                 exists = True
 
                         # If the player wasn't in the list, add them
                         if exists == False:
-                            self.dealer.players.append({"name": user.get('name'),
-                                                        "id": user.get('id'),
+                            self.dealer.players.append({"name": person.get('name'),
+                                                        "id": person.get('id'),
                                                         "balance": 500,
                                                         "bet": None,
                                                         "hand": [],
                                                         "status": None
                                                         })
 
-                            response = user.get('name') + " has been added to the player list"
+                            response = person.get('name') + " has been added to the player list"
                             self.slack_client.api_call("chat.postMessage", text=response,
                                                         channel=user, as_user=True)
 

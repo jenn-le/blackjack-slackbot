@@ -54,7 +54,7 @@ class Dealer(object):
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=user, as_user=True)
             else:
-                response = "The valid commands for 'show' are scoreboard and hand"
+                response = "The valid commands for 'show' are scoreboard, and hand"
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
 
