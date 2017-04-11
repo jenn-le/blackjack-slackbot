@@ -72,7 +72,7 @@ class Dealer(object):
                     for player in self.players:
                         # Find the player's data
                         if player.get('id') == user:
-                            if player.get('balance') >= bet
+                            if player.get('balance') >= bet:
                                 player['bet'] = bet
 
                                 response = player.get('name') + " has placed a bet of " + bet + " coins"
