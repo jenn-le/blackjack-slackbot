@@ -46,8 +46,8 @@ class Dealer(object):
                 for player in self.players:
                     # Find the player's data
                     if player.get('id') == user:
-                    response = "You have a total of " + str(player.get('balance')) + " coins"
-                    self.slack_client.api_call("chat.postMessage", text=response,
+                        response = "You have a total of " + str(player.get('balance')) + " coins"
+                        self.slack_client.api_call("chat.postMessage", text=response,
                                                 channel=user, as_user=True)
             elif command.split(' ')[1] == "hand":
                 response = "Temp hand response"
