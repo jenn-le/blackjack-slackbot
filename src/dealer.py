@@ -188,12 +188,16 @@ class Dealer(object):
                                     channel=self.main_channel, as_user=True)
 
         # Showing the dealer's hand
+        fallback = ""
+        for card in self.hand:
+            fallback += card + " "
+
         temp_hand = self.hand[:]
         if end == False:
             temp_hand[1] == "blank"
             print(temp_hand[1])
 
-        hand = [{"fallback": fallback,
+        hand = [{"fallback": "Dealer's hand",
                 "title": player.get('name') + "'s' hand",
                 "image_url": handImage(temp_hand)
                }]
