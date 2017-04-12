@@ -141,8 +141,8 @@ class Dealer(object):
     def deal(self):
         for player in self.players:
             if player.get('bet') != None:
-                player.get('hand').append(deck.draw())
-                player.get('hand').append(deck.draw())
+                player.get('hand').append(self.deck.draw())
+                player.get('hand').append(self.deck.draw())
 
                 fallback = ""
                 for card in player.get('hand'):
