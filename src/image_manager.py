@@ -8,7 +8,7 @@ def handImage(ims):
     pyim = pyimgur.Imgur(CLIENT_ID)
 
     if os.path.exists('assets/hand.png'):
-        os.remove('assets/hand.png',*,dir_fd=None)
+        os.remove('assets/hand.png')
 
     images = []
     for im in ims:
