@@ -142,6 +142,7 @@ class Dealer(object):
                     fallback += card + " "
 
                 hand = json.dumps([{"attachments": [
+                                    {
                                         "fallback": fallback,
                                         "title": "Your hand",
                                         "fields": [
@@ -152,6 +153,7 @@ class Dealer(object):
                                                 "image_url": "../assets/" + player.get('hand')[1]
                                             }
                                         ]
+                                    }
                                   ]}])
 
                 self.slack_client.api_call("chat.postMessage", attachments=hand,
