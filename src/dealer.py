@@ -174,7 +174,7 @@ class Dealer(object):
         for card in player.get('hand'):
             fallback += card + " "
 
-        temp_hand = self.hand[:]
+        temp_hand = player.get('hand')
         if show_all == False:
             temp_hand[1] == "blank"
             print(temp_hand[1])
