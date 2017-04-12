@@ -177,7 +177,6 @@ class Dealer(object):
         temp_hand = player.get('hand')
         if show_all == False:
             temp_hand[1] = "back"
-            print(temp_hand[1])
 
         hand = [{"fallback": fallback,
                 "title": title,
@@ -200,8 +199,7 @@ class Dealer(object):
 
         temp_hand = self.hand[:]
         if end == False:
-            temp_hand[1] == "blank"
-            print(temp_hand[1])
+            temp_hand[1] = "back"
 
         hand = [{"fallback": fallback,
                 "title": "Dealer's hand",
