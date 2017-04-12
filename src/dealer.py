@@ -141,12 +141,14 @@ class Dealer(object):
     def deal(self):
         for player in self.players:
             if player.get('bet') != None:
+                print player.get('name')
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
                 fallback = ""
                 for card in player.get('hand'):
                     fallback += card + " "
+                    print card
 
                 hand = json.dumps([{"attachments": [
                                     {
@@ -167,3 +169,10 @@ class Dealer(object):
                                             channel=player.get('id'), as_user=True)
 
         # After dealing each player their hand, show the entire table
+
+    def reset(self):
+        self.deck = Deck()
+        self.hand = []
+        self.players = []
+        self.in_progress = False
+        self.hard = False

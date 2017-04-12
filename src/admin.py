@@ -86,11 +86,7 @@ class Admin(object):
                                         channel=user, as_user=True)
 
         def reset(self, command, user):
-            self.dealer.deck = Deck()
-            self.dealer.hand = []
-            self.dealer.players = []
-            self.dealer.in_progress = False
-            self.dealer.hard = False
+            self.dealer.reset()
 
             response = "The game has been reset"
             self.slack_client.api_call("chat.postMessage", text=response,
