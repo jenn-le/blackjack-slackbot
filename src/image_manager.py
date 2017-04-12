@@ -5,11 +5,10 @@ from PIL import Image
 CLIENT_ID = "fa37e007405ff2d"
 im = pyimgur.Imgur(CLIENT_ID)
 
-def handImage(images):
-    for im in images:
-        im += ".png"
-    for im in images:
-        print(im)
+def handImage(ims):
+    images = []
+    for im in ims:
+        images.append(im + ".png")
     images = map(Image.open, images)
     widths, heights = zip(*(i.size for i in images))
 
