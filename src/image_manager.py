@@ -1,6 +1,6 @@
 import sys
 import pyimgur
-import Image
+from PIL import Image
 
 CLIENT_ID = "fa37e007405ff2d"
 im = pyimgur.Imgur(CLIENT_ID)
