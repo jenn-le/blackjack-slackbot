@@ -6,6 +6,9 @@ CLIENT_ID = "fa37e007405ff2d"
 im = pyimgur.Imgur(CLIENT_ID)
 
 def handImage(images):
+    for im in images:
+        im += ".png"
+    images = map(Image.open, images)
     widths, heights = zip(*(i.size for i in images))
 
     total_width = sum(widths)
