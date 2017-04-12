@@ -178,21 +178,21 @@ class Dealer(object):
         for player in self.players:
             if player.get('bet') != None:
 
-            fallback = ""
-            for card in player.get('hand'):
-                fallback += card + " "
+                fallback = ""
+                for card in player.get('hand'):
+                    fallback += card + " "
 
-            temp_hand = player.get('hand')
+                temp_hand = player.get('hand')
 
-            if end == False:
-                temp_hand[1] == "blank"
+                if end == False:
+                    temp_hand[1] == "blank"
 
-            hand = [{"fallback": fallback,
-                    "title": player.get('name') + "'s' hand",
-                    "image_url": handImage(temp_hand)
-                   }]
+                hand = [{"fallback": fallback,
+                        "title": player.get('name') + "'s' hand",
+                        "image_url": handImage(temp_hand)
+                       }]
 
-            self.slack_client.api_call("chat.postMessage", attachments=hand,
+                self.slack_client.api_call("chat.postMessage", attachments=hand,
                                         channel=self.main_channel, as_user=True)
 
     def reset(self):
