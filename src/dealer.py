@@ -149,6 +149,9 @@ class Dealer(object):
 
     # Deals first two cards to each player that has made a bet and sends the necessary messages
     def deal(self):
+        self.hand.append(self.deck.draw())
+        self.hand.append(self.deck.draw())
+
         for player in self.players:
             if player.get('bet') != None:
                 player.get('hand').append(self.deck.draw())
@@ -175,6 +178,20 @@ class Dealer(object):
         self.slack_client.api_call("chat.postMessage", text=response,
                                     channel=self.main_channel, as_user=True)
 
+        # Showing the dealer's hand
+        temp_hand = self.hand[:]
+        if end == False:
+            temp_hand[1] == "blank"
+            print(temp_hand[1])
+
+        hand = [{"fallback": fallback,
+                "title": player.get('name') + "'s' hand",
+                "image_url": handImage(temp_hand)
+               }]
+
+        self.slack_client.api_call("chat.postMessage", attachments=hand,
+                                channel=self.main_channel, as_user=True)
+
         for player in self.players:
             if player.get('bet') != None:
 
@@ -182,7 +199,7 @@ class Dealer(object):
                 for card in player.get('hand'):
                     fallback += card + " "
 
-                temp_hand = player.get('hand')
+                temp_hand = player.get('hand')[:]
 
                 if end == False:
                     temp_hand[1] == "blank"
