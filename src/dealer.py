@@ -163,13 +163,13 @@ class Dealer(object):
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
-                self.show_hand(player, "Your hand", True)
+                self.show_hand(player, "Your hand", player.get('id'), True)
 
         # After dealing each player their hand, show the entire table
         self.show_table(False)
 
     # Show indicated player's hand
-    def show_hand(self, player, title, show_all):
+    def show_hand(self, player, title, channel, show_all):
         fallback = ""
         for card in player.get('hand'):
             fallback += card + " "
@@ -185,7 +185,7 @@ class Dealer(object):
                }]
 
         self.slack_client.api_call("chat.postMessage", attachments=hand,
-                                    channel=player.get('id'), as_user=True)
+                                    channel=channel, as_user=True)
 
     # Shows the hands of everyone, hides the 2nd card if it is not the end of the hand
     def show_table(self, end):
@@ -213,7 +213,7 @@ class Dealer(object):
 
         for player in self.players:
             if player.get('bet') != None:
-                self.show_hand(player, player.get('name') + "'s hand'", end)
+                self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, end)
 
     def reset(self):
         self.deck = Deck()

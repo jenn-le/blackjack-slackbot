@@ -7,9 +7,6 @@ def handImage(ims):
     CLIENT_ID = "fa37e007405ff2d"
     pyim = pyimgur.Imgur(CLIENT_ID)
 
-    if os.path.exists('assets/hand.png'):
-        os.remove('assets/hand.png')
-
     images = []
     for im in ims:
         images.append("assets/" + im + ".png")
@@ -30,5 +27,7 @@ def handImage(ims):
 
     PATH = "assets/hand.png"
     uploaded_image = pyim.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
+    os.remove('assets/hand.png')
 
+    print (uploaded_image.link)
     return uploaded_image.link
