@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from slackclient import SlackClient
 from deck import Deck
 
@@ -22,7 +23,7 @@ class Dealer(object):
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
             elif command.split(' ')[1] == "scoreboard":
-                response = "*Scoreboard*\n===================================================\n"
+                response = "*Scoreboard*\n==============================================\n"
 
                 # Only sorts the scores if the players list isn't one person long
                 if len(self.players) > 1:
@@ -30,11 +31,9 @@ class Dealer(object):
                         coins = self.players[index].get('balance')
                         position = index
 
-                        while position > 0 and self.players[position-1].get('balance') > coins:
+                        while position > 0 and self.players[position-1].get('balance') < coins:
                             self.players[position - 1], self.players[position] = self.players[position], self.players[position - 1]
                             position -= 1
-
-                    self.players = list(reversed(self.players))
 
                 for player in self.players:
                     response += "\n" + player.get('name') + ": " + str(player.get('balance'))
@@ -42,6 +41,7 @@ class Dealer(object):
 
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
+
             elif command.split(' ')[1] == "balance":
                 for player in self.players:
                     # Find the player's data
@@ -90,9 +90,17 @@ class Dealer(object):
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
-        # def play(self, command, user, channel):
-        #
-        #
+        def play(self, command, user, channel):
+            if self.in_progress == True:
+                response = "Game already in progress"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=user, as_user=True)
+            else
+                # New deck for each hand
+                self.deck = Deck()
+                self.in_progress = True
+                deal()
+
         # def hit(self, command, user, channel):
         #
         #
@@ -103,8 +111,8 @@ class Dealer(object):
 
         # Calling the appropriate function
         actions = {"!show": show,
-                   "!bet": bet
-                #    "!play": play,
+                   "!bet": bet,
+                   "!play": play
                 #    "!hit": hit,
                 #    "!double": double,
                 #    "!stay": stay
@@ -121,3 +129,32 @@ class Dealer(object):
     #
     #
     # def hard(self):
+
+    # Deals first two cards to each player that has made a bet and sends the necessary messages
+    def deal():
+        for player in self.players:
+            if player.get('bet') != None:
+                player.get('hand').append(deck.draw())
+                player.get('hand').append(deck.draw())
+
+                fallback = ""
+                for card in player.get('hand'):
+                    fallback += card + " "
+
+                hand = json.dumps([{"attachments": [
+                                        "fallback": fallback,
+                                        "title": "Your hand",
+                                        "fields": [
+                                            {
+                                                "image_url": "../assets/" + player.get('hand')[0]
+                                            },
+                                            {
+                                                "image_url": "../assets/" + player.get('hand')[1]
+                                            }
+                                        ]
+                                  ]}])
+
+                self.slack_client.api_call("chat.postMessage", attachments=hand,
+                                            channel=player.get('id'), as_user=True)
+
+        # After dealing each player their hand, show the entire table
