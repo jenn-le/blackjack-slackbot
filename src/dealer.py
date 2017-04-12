@@ -95,7 +95,7 @@ class Dealer(object):
                 response = "Game already in progress"
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=user, as_user=True)
-            else
+            else:
                 # New deck for each hand
                 self.deck = Deck()
                 self.in_progress = True
