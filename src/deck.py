@@ -18,10 +18,10 @@ class Deck(object):
                         "ac", "ad", "ah", "as",
                      ]
 
-    def draw():
+    def draw(self):
         return self.cards.pop(randint(0, len(self.cards) - 1))
 
-    def empty():
+    def empty(self):
         if len(self.cards) == 0:
             return True
         return False
