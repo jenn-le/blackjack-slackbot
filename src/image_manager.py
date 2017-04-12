@@ -26,6 +26,6 @@ def handImage(ims):
     new_im.save('hand.png')
 
     PATH = "assets/hand.png"
-    uploaded_image = im.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
+    uploaded_image = new_im.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
 
     return uploaded_image.link
