@@ -8,7 +8,7 @@ im = pyimgur.Imgur(CLIENT_ID)
 def handImage(ims):
     images = []
     for im in ims:
-        images.append(im + ".png")
+        images.append("../assets/" + im + ".png")
     images = map(Image.open, images)
     widths, heights = zip(*(i.size for i in images))
 
