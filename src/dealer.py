@@ -60,7 +60,7 @@ class Dealer(object):
 
         # Saves your bet to indicate you'll play in the next game
         def bet(self, command, user, channel):
-            if self.in_progress == true:
+            if self.in_progress == True:
                 response = "You cannot place a bet while there is hand going on"
             else:
                 digits = re.compile('^\d*?')
