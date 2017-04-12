@@ -29,5 +29,4 @@ def handImage(ims):
     uploaded_image = pyim.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
     os.remove('assets/hand.png')
 
-    print (uploaded_image.link)
     return uploaded_image.link
