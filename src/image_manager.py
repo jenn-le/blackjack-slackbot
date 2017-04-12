@@ -6,6 +6,8 @@ def handImage(ims):
     CLIENT_ID = "fa37e007405ff2d"
     pyim = pyimgur.Imgur(CLIENT_ID)
 
+    os.remove('assets/hand.png', *, dir_fd=None)
+
     images = []
     for im in ims:
         images.append("assets/" + im + ".png")

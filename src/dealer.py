@@ -159,7 +159,7 @@ class Dealer(object):
             if player.get('bet') != None:
                 if self.deck.empty():
                     self.deck = Deck()
-                    
+
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
@@ -203,8 +203,8 @@ class Dealer(object):
             temp_hand[1] == "blank"
             print(temp_hand[1])
 
-        hand = [{"fallback": "Dealer's hand",
-                "title": player.get('name') + "'s' hand",
+        hand = [{"fallback": fallback,
+                "title": "Dealer's hand",
                 "image_url": handImage(temp_hand)
                }]
 
