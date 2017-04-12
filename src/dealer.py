@@ -149,11 +149,17 @@ class Dealer(object):
 
     # Deals first two cards to each player that has made a bet and sends the necessary messages
     def deal(self):
+        if self.deck.empty():
+            self.deck = Deck()
+
         self.hand.append(self.deck.draw())
         self.hand.append(self.deck.draw())
 
         for player in self.players:
             if player.get('bet') != None:
+                if self.deck.empty():
+                    self.deck = Deck()
+                    
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
