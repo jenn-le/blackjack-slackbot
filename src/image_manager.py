@@ -8,6 +8,8 @@ im = pyimgur.Imgur(CLIENT_ID)
 def handImage(images):
     for im in images:
         im += ".png"
+    for im in images:
+        print(im)
     images = map(Image.open, images)
     widths, heights = zip(*(i.size for i in images))
 
