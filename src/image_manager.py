@@ -1,4 +1,5 @@
 import sys
+import os
 import pyimgur
 from PIL import Image
 
@@ -6,7 +7,8 @@ def handImage(ims):
     CLIENT_ID = "fa37e007405ff2d"
     pyim = pyimgur.Imgur(CLIENT_ID)
 
-    os.remove('assets/hand.png', *, dir_fd=None)
+    if os.path.exists('assets/hand.png'):
+        os.remove('assets/hand.png',*,dir_fd=None)
 
     images = []
     for im in ims:
