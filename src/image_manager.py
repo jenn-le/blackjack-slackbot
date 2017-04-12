@@ -9,7 +9,7 @@ def handImage(ims):
     images = []
     for im in ims:
         images.append("assets/" + im + ".png")
-    images = map(Image.open, images)
+    images = list(map(Image.open, images))
     widths, heights = zip(*(i.size for i in images))
 
     total_width = sum(widths)
