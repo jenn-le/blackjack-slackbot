@@ -3,6 +3,7 @@ import re
 import json
 from slackclient import SlackClient
 from deck import Deck
+from image_manager import handImage
 
 class Dealer(object):
     def __init__(self):
@@ -150,20 +151,13 @@ class Dealer(object):
                     fallback += card + " "
                     print(card)
 
-                hand = {"attachments": [
+                hand = json.dumps({"attachments": [
                                     {
                                         "fallback": fallback,
                                         "title": "Your hand",
-                                        "fields": [
-                                            {
-                                                "image_url": "../assets/" + player.get('hand')[0]
-                                            },
-                                            {
-                                                "image_url": "../assets/" + player.get('hand')[1]
-                                            }
-                                        ]
+                                        "image_url": handImage(player.get('hand'))
                                     }
-                        ]}
+                                  ]})
 
                 self.slack_client.api_call("chat.postMessage", attachments=hand,
                                             channel=player.get('id'), as_user=True)
