@@ -8,7 +8,7 @@ im = pyimgur.Imgur(CLIENT_ID)
 def handImage(ims):
     images = []
     for im in ims:
-        images.append("../assets/" + im + ".png")
+        images.append("assets/" + im + ".png")
     images = map(Image.open, images)
     widths, heights = zip(*(i.size for i in images))
 
@@ -25,7 +25,7 @@ def handImage(ims):
 
     new_im.save('hand.png')
 
-    PATH = "../assets/hand.png"
+    PATH = "assets/hand.png"
     uploaded_image = im.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
 
     return uploaded_image.link
