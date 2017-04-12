@@ -82,6 +82,8 @@ class Dealer(object):
                                 response = "You have placed a bet of " + str(bet) + " coins"
                                 self.slack_client.api_call("chat.postMessage", text=response,
                                                             channel=user, as_user=True)
+
+                                return
                             else:
                                 response = "You do not have enough coins to bet that much"
                 else:
@@ -91,7 +93,11 @@ class Dealer(object):
                                         channel=user, as_user=True)
 
         def play(self, command, user, channel):
-            if self.in_progress == True:
+            if len(command.split(' ')) != 1:
+                response = "The play command doesn't take any arguments"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=user, as_user=True)
+            elif self.in_progress == True:
                 response = "Game already in progress"
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=user, as_user=True)
@@ -99,7 +105,7 @@ class Dealer(object):
                 # New deck for each hand
                 self.deck = Deck()
                 self.in_progress = True
-                deal()
+                self.deal()
 
         # def hit(self, command, user, channel):
         #
@@ -131,7 +137,7 @@ class Dealer(object):
     # def hard(self):
 
     # Deals first two cards to each player that has made a bet and sends the necessary messages
-    def deal():
+    def deal(self):
         for player in self.players:
             if player.get('bet') != None:
                 player.get('hand').append(deck.draw())
