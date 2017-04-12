@@ -19,11 +19,10 @@ def handImage(ims):
 
     x_offset = 0
     for im in images:
-        im += ".png"
         new_im.paste(im, (x_offset,0))
         x_offset += im.size[0]
 
-    new_im.save('hand.png')
+    new_im.save('assets/hand.png')
 
     PATH = "assets/hand.png"
     uploaded_image = new_im.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
