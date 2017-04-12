@@ -5,9 +5,9 @@ from dealer import Dealer
 from admin import Admin
 
 # possible commands, dealer will handle what to do with them
-blackjack_actions = ['!show']
+blackjack_actions = ['!show',
                      '!bet',
-                     '!play'
+                     '!play']
                     #  '!hit',
                     #  '!double',
                     #  '!stay']
