@@ -142,19 +142,17 @@ class Dealer(object):
     def deal(self):
         for player in self.players:
             if player.get('bet') != None:
-                print(player.get('name'))
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
                 fallback = ""
                 for card in player.get('hand'):
                     fallback += card + " "
-                    print(card)
 
-                hand = ["fallback": fallback,
+                hand = [{"fallback": fallback,
                         "title": "Your hand",
                         "image_url": handImage(player.get('hand'))
-                       ]
+                       }]
 
                 self.slack_client.api_call("chat.postMessage", attachments=hand,
                                             channel=player.get('id'), as_user=True)
