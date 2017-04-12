@@ -13,6 +13,7 @@ class Dealer(object):
         self.players = []
         self.in_progress = False
         self.hard = False
+        self.main_channel = "C4TTHACG5"
         self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # The calling the general game functions
@@ -20,7 +21,7 @@ class Dealer(object):
         # Functions for the general commands
         def show(self, command, user, channel):
             if len(command.split(' ')) < 2:
-                response = "The valid commands for 'show' are scoreboard, balance and hand"
+                response = "The valid commands for 'show' are scoreboard, balance, table, and hand"
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
             elif command.split(' ')[1] == "scoreboard":
@@ -50,6 +51,14 @@ class Dealer(object):
                         response = "You have a total of " + str(player.get('balance')) + " coins"
                         self.slack_client.api_call("chat.postMessage", text=response,
                                                 channel=user, as_user=True)
+            elif command.split(' ')[1] == "table":
+                if len(command.split(' ')) != 2:
+                    response = "The show table command doesn't take any arguments"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=user, as_user=True)
+                else:
+                    self.showTable(False)
+
             elif command.split(' ')[1] == "hand":
                 response = "Temp hand response"
                 self.slack_client.api_call("chat.postMessage", text=response,
@@ -79,7 +88,7 @@ class Dealer(object):
 
                                 response = player.get('name') + " has placed a bet of " + str(bet) + " coins"
                                 self.slack_client.api_call("chat.postMessage", text=response,
-                                                            channel="C4TTHACG5", as_user=True)
+                                                            channel=self.main_channel, as_user=True)
 
                                 response = "You have placed a bet of " + str(bet) + " coins"
                                 self.slack_client.api_call("chat.postMessage", text=response,
@@ -158,6 +167,33 @@ class Dealer(object):
                                             channel=player.get('id'), as_user=True)
 
         # After dealing each player their hand, show the entire table
+        self.showTable(False)
+
+    # Shows the hands of everyone, hides the 2nd card if it is not the end of the hand
+    def showTable(self, end):
+        response = "*The current table:*"
+        self.slack_client.api_call("chat.postMessage", text=response,
+                                    channel=self.main_channel, as_user=True)
+
+        for player in self.players:
+            if player.get('bet') != None:
+
+            fallback = ""
+            for card in player.get('hand'):
+                fallback += card + " "
+
+            temp_hand = player.get('hand')
+
+            if end == False:
+                temp_hand[1] == "blank"
+
+            hand = [{"fallback": fallback,
+                    "title": player.get('name') + "'s' hand",
+                    "image_url": handImage(temp_hand)
+                   }]
+
+            self.slack_client.api_call("chat.postMessage", attachments=hand,
+                                        channel=self.main_channel, as_user=True)
 
     def reset(self):
         self.deck = Deck()
