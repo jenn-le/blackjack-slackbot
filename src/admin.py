@@ -85,11 +85,23 @@ class Admin(object):
             self.slack_client.api_call("chat.postMessage", text=response,
                                         channel=user, as_user=True)
 
+        def reset(self, command, user):
+            self.dealer.deck = Deck()
+            self.dealer.hand = []
+            self.dealer.players = []
+            self.dealer.in_progress = False
+            self.dealer.hard = False
+
+            response = "The game has been reset"
+            self.slack_client.api_call("chat.postMessage", text=response,
+                                        channel=user, as_user=True)
+
         # Calling the appropriate function
         actions = {"addplayer": addplayer,
                    "change_balance": change_balance,
                    "normal": normal,
-                   "hard": hard
+                   "hard": hard,
+                   "reset": reset
                   }
 
         actions[command.split(' ')[1]](self, command, user)
