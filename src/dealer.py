@@ -141,14 +141,14 @@ class Dealer(object):
     def deal(self):
         for player in self.players:
             if player.get('bet') != None:
-                print player.get('name')
+                print(player.get('name'))
                 player.get('hand').append(self.deck.draw())
                 player.get('hand').append(self.deck.draw())
 
                 fallback = ""
                 for card in player.get('hand'):
                     fallback += card + " "
-                    print card
+                    print(card)
 
                 hand = json.dumps([{"attachments": [
                                     {
