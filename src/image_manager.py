@@ -3,7 +3,7 @@ import pyimgur
 from PIL import Image
 
 CLIENT_ID = "fa37e007405ff2d"
-im = pyimgur.Imgur(CLIENT_ID)
+pyim = pyimgur.Imgur(CLIENT_ID)
 
 def handImage(ims):
     images = []
@@ -25,6 +25,6 @@ def handImage(ims):
     new_im.save('assets/hand.png')
 
     PATH = "assets/hand.png"
-    uploaded_image = new_im.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
+    uploaded_image = pyim.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
 
     return uploaded_image.link
