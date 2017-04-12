@@ -75,11 +75,11 @@ class Dealer(object):
                             if player.get('balance') >= bet:
                                 player['bet'] = bet
 
-                                response = player.get('name') + " has placed a bet of " + bet + " coins"
+                                response = player.get('name') + " has placed a bet of " + str(bet) + " coins"
                                 self.slack_client.api_call("chat.postMessage", text=response,
                                                             channel="C4TTHACG5", as_user=True)
 
-                                response = "You have placed a bet of " + bet + " coins"
+                                response = "You have placed a bet of " + str(bet) + " coins"
                                 self.slack_client.api_call("chat.postMessage", text=response,
                                                             channel=user, as_user=True)
                             else:
