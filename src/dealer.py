@@ -216,7 +216,7 @@ class Dealer(object):
         self.hand.append(self.deck.draw())
         self.hand.append(self.deck.draw())
 
-        self.hand_value = self.dealer_brain.calculate_value(self.hand, self.status)
+        self.hand_value = self.dealer_brain.calculate_value(self.hand)
 
         for player in self.players:
             if player.get('bet') != None:
