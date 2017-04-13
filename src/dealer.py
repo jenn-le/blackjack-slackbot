@@ -139,6 +139,7 @@ class Dealer(object):
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
                     player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
+                    print(player.get('status'))
                     self.check_end()
 
         def double(self, command, user, channel):
