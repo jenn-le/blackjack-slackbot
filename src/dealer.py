@@ -230,7 +230,7 @@ class Dealer(object):
 
                 player.get('hand').append(self.deck.draw())
 
-                player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
+                player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
                 self.show_hand(player, "Your hand", player.get('id'), True)
 
         # After dealing each player their hand, show the entire table
