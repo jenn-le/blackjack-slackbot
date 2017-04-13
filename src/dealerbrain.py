@@ -4,7 +4,7 @@ class DealerBrain(object):
     def __init__(self):
         self.deck = Deck()
 
-    def calculate_value(self, hand, status):
+    def calculate_value(self, hand):
         value = 0
 
         for card in hand:
@@ -15,12 +15,5 @@ class DealerBrain(object):
                     value += 11
             else:
                 value += self.deck.values[card]
-
-        if value == 21 and len(hand) == 2:
-            status = "blackjack"
-        elif value == 21:
-            status = "21"
-        elif value > 21:
-            status = "busted"
 
         return value

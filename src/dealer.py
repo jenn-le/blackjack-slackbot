@@ -123,6 +123,12 @@ class Dealer(object):
                 self.deal()
 
         def hit(self, command, user, channel):
+            if self.in_progress == False:
+                response = "There is no game going on right now"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=user, as_user=True)
+
+                return
             for player in self.players:
                 if player.get('bet') != None and player.get('id') == user:
                     if self.deck.empty():
@@ -138,11 +144,17 @@ class Dealer(object):
 
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
-                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
-                    print(player.get('status'))
-                    self.check_end()
+                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
+
+            self.check_end()
 
         def double(self, command, user, channel):
+            if self.in_progress == False:
+                response = "There is no game going on right now"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=user, as_user=True)
+
+                return
             for player in self.players:
                 if player.get('bet') != None and player.get('id') == user:
                     if player.get('status') != None:
@@ -169,15 +181,21 @@ class Dealer(object):
                                                 channel=user, as_user=True)
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
-                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
-                    self.check_end()
+                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
+            self.check_end()
 
         def stay(self, command, user, channel):
+            if self.in_progress == False:
+                response = "There is no game going on right now"
+                self.slack_client.api_call("chat.postMessage", text=response,
+                                            channel=user, as_user=True)
+
+                return
             for player in self.players:
                 if player.get('bet') != None and player.get('id') == user:
                     player['status'] = "stayed"
 
-                    self.check_end()
+            self.check_end()
 
         # Calling the appropriate function
         actions = {"!show": show,
@@ -267,8 +285,30 @@ class Dealer(object):
         ended = True
 
         for player in self.players:
-            if player.get('bet') != None and player.get('status') == None:
-                ended = False
+            if player.get('bet') != None:
+                if player.get('hand_value') == 21 and len(player.get('hand')) == 2:
+                    player['status'] = "blackjack"
+                    response = "You got blackjack!"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=player.get('id'), as_user=True)
+                elif player.get('hand_value') <= 21 and len(player.get('hand')) == 5:
+                    player['status'] = "five-card"
+                    response = "You've five-carded'!"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=player.get('id'), as_user=True)
+                elif player.get('hand_value') == 21:
+                    player['status'] = "21"
+                    response = "You got 21!"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=player.get('id'), as_user=True)
+                elif player.get('hand_value') > 21:
+                    player['status'] = "busted"
+                    response = "You've busted!"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=player.get('id'), as_user=True)
+
+                if player.get('bet') != None and player.get('status') == None:
+                    ended = False
 
         if ended == True:
             self.in_progress = False
