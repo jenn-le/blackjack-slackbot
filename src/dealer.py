@@ -4,12 +4,16 @@ import json
 from slackclient import SlackClient
 from deck import Deck
 from image_manager import handImage
+from dealerbrain import DealerBrain
 
 class Dealer(object):
     def __init__(self):
         # The dealer's hand
+        self.dealer_brain = DealerBrain()
         self.deck = Deck()
         self.hand = []
+        self.status = None
+        self.hand_value = 0
         self.players = []
         self.in_progress = False
         self.hard = False
@@ -118,34 +122,70 @@ class Dealer(object):
                 self.in_progress = True
                 self.deal()
 
-        # def hit(self, command, user, channel):
-        #
-        #
-        # def double(self, command, user, channel):
-        #
-        #
-        # def stay(self, command, user, channel):
+        def hit(self, command, user, channel):
+            for player in self.players:
+                if player.get('bet') != None and player.get('id') == user:
+                    if self.deck.empty():
+                        self.deck = Deck()
+
+                    if player.get('status') != None:
+                        response = "You are done for this hand. Wait for every player to finish to see the results"
+                        self.slack_client.api_call("chat.postMessage", text=response,
+                                                    channel=user, as_user=True)
+                        return
+
+                    player.get('hand').append(self.deck.draw())
+
+                    self.show_hand(player, "Your hand", player.get('id'), True)
+
+                    self.check_end()
+
+        def double(self, command, user, channel):
+            for player in self.players:
+                if player.get('bet') != None and player.get('id') == user:
+                    if player.get('status') != None:
+                        response = "You are done for this hand. Wait for every player to finish to see the results"
+                        self.slack_client.api_call("chat.postMessage", text=response,
+                                                    channel=user, as_user=True)
+                        return
+
+                    if len(player.get('hand')) > 2:
+                        response = "You can no longer double down. Just hit or stay"
+                        self.slack_client.api_call("chat.postMessage", text=response,
+                                                    channel=user, as_user=True)
+                        return
+
+                    if self.deck.empty():
+                        self.deck = Deck()
+
+                    player.get('hand').append(self.deck.draw())
+                    player['bet'] = player.get('bet') * 2
+
+
+                    response = "Your bet is now " + str(bet) + " coins"
+                    self.slack_client.api_call("chat.postMessage", text=response,
+                                                channel=user, as_user=True)
+                    self.show_hand(player, "Your hand", player.get('id'), True)
+
+                    self.check_end()
+
+        def stay(self, command, user, channel):
+            for player in self.players:
+                if player.get('bet') != None and player.get('id') == user:
+                    player['status'] = "stayed"
+
+                    self.check_end()
 
         # Calling the appropriate function
         actions = {"!show": show,
                    "!bet": bet,
-                   "!play": play
-                #    "!hit": hit,
-                #    "!double": double,
-                #    "!stay": stay
+                   "!play": play,
+                   "!hit": hit,
+                   "!double": double,
+                   "!stay": stay
                   }
 
         actions[command.split(' ', 1)[0]](self, command, user, channel)
-
-
-    # Game management functions
-    # def end_hand(self):
-    #
-    #
-    # def normal(self):
-    #
-    #
-    # def hard(self):
 
     # Deals first two cards to each player that has made a bet and sends the necessary messages
     def deal(self):
@@ -155,14 +195,21 @@ class Dealer(object):
         self.hand.append(self.deck.draw())
         self.hand.append(self.deck.draw())
 
+        self.hand_value = self.dealer_brain.calculate_value(self.hand, self.status)
+
         for player in self.players:
             if player.get('bet') != None:
                 if self.deck.empty():
                     self.deck = Deck()
 
                 player.get('hand').append(self.deck.draw())
+
+                if self.deck.empty():
+                    self.deck = Deck()
+
                 player.get('hand').append(self.deck.draw())
 
+                player['hand_value'] = self.dealer_brain(player.get('hand'), player['status'])
                 self.show_hand(player, "Your hand", player.get('id'), True)
 
         # After dealing each player their hand, show the entire table
@@ -212,6 +259,19 @@ class Dealer(object):
         for player in self.players:
             if player.get('bet') != None:
                 self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, end)
+
+    def check_end(self):
+        ended = True
+
+        for player in self.players:
+            if player.get('bet') != None and player.get('status') == None:
+                ended = False
+
+        if ended == True:
+            self.in_progress = False
+            response = "The hand has ended temp response"
+            self.slack_client.api_call("chat.postMessage", text=response,
+                                        channel=self.main_channel, as_user=True)
 
     def reset(self):
         self.deck = Deck()

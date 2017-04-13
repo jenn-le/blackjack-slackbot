@@ -35,7 +35,8 @@ class Admin(object):
                                                         "balance": 500,
                                                         "bet": None,
                                                         "hand": [],
-                                                        "status": None
+                                                        "status": None,
+                                                        "hand_value": 0
                                                         })
 
                             response = person.get('name') + " has been added to the player list"
