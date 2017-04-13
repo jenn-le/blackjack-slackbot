@@ -138,6 +138,7 @@ class Dealer(object):
 
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
+                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
                     self.check_end()
 
         def double(self, command, user, channel):
@@ -167,6 +168,7 @@ class Dealer(object):
                                                 channel=user, as_user=True)
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
+                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
                     self.check_end()
 
         def stay(self, command, user, channel):
@@ -209,7 +211,7 @@ class Dealer(object):
 
                 player.get('hand').append(self.deck.draw())
 
-                player['hand_value'] = self.dealer_brain(player.get('hand'), player['status'])
+                player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'), player['status'])
                 self.show_hand(player, "Your hand", player.get('id'), True)
 
         # After dealing each player their hand, show the entire table
