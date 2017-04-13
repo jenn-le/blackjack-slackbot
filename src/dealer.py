@@ -66,9 +66,9 @@ class Dealer(object):
             elif command.split(' ')[1] == "hand":
                 for player in self.players:
                     if player.get('bet') != None and player.get('id') == user:
-                        self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, True)
+                        self.show_hand(player, player.get('name') + "'s hand'", player.get('id'), True)
             else:
-                response = "The valid commands for 'show' are scoreboard, and hand"
+                response = "The valid commands for 'show' are scoreboard, balance, table, and hand"
                 self.slack_client.api_call("chat.postMessage", text=response,
                                             channel=channel, as_user=True)
 
