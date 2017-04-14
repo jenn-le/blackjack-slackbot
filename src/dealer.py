@@ -112,7 +112,9 @@ class Dealer(object):
 
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
-                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
+                    player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
+                    if response != None:
+                        self.message_user(response, user)
 
             self.check_end()
 
@@ -139,7 +141,9 @@ class Dealer(object):
                     self.message_user("Your bet is now " + str(bet) + " coins", user)
                     self.show_hand(player, "Your hand", player.get('id'), True)
 
-                    player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
+                    player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
+                    if response != None:
+                        self.message_user(response, user)
             self.check_end()
 
         def stay(self, command, user, channel):
