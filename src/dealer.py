@@ -11,9 +11,6 @@ class Dealer(object):
         # The dealer's hand
         self.dealer_brain = DealerBrain()
         self.deck = Deck()
-        self.hand = []
-        self.status = None
-        self.hand_value = 0
         self.players = []
         self.in_progress = False
         self.hard = False
@@ -169,14 +166,6 @@ class Dealer(object):
 
     # Deals first two cards to each player that has made a bet and sends the necessary messages
     def deal(self):
-        if self.deck.empty():
-            self.deck = Deck()
-
-        self.hand.append(self.deck.draw())
-        self.hand.append(self.deck.draw())
-
-        self.hand_value = self.dealer_brain.calculate_value(self.hand)
-
         for player in self.players:
             if player.get('bet') != None:
                 if self.deck.empty():
@@ -189,7 +178,7 @@ class Dealer(object):
 
                 player.get('hand').append(self.deck.draw())
 
-                player['hand_value'] = self.dealer_brain.calculate_value(player.get('hand'))
+                player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
                 self.show_hand(player, "Your hand", player.get('id'), True)
 
         # After dealing each player their hand, show the entire table
@@ -216,24 +205,6 @@ class Dealer(object):
     # Shows the hands of everyone, hides the 2nd card if it is not the end of the hand
     def show_table(self, end):
         self.message_channel("*The current table:*")
-
-        # Showing the dealer's hand
-        fallback = ""
-        for card in self.hand:
-            fallback += card + " "
-
-        temp_hand = self.hand[:]
-        if end == False:
-            temp_hand[1] = "back"
-
-        hand = [{"fallback": fallback,
-                "title": "Dealer's hand",
-                "image_url": handImage(temp_hand)
-               }]
-
-        self.slack_client.api_call("chat.postMessage", attachments=hand,
-                                channel=self.main_channel, as_user=True)
-
         for player in self.players:
             if player.get('bet') != None:
                 self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, end)
@@ -260,7 +231,6 @@ class Dealer(object):
 
     def reset(self):
         self.deck = Deck()
-        self.hand = []
         self.players = []
         self.in_progress = False
         self.hard = False

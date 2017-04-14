@@ -8,6 +8,7 @@ class DealerBrain(object):
         value = 0
         ace_count = 0
         status = None
+        response = None
 
         for card in hand:
             if card == "ac" or card == "ad" or card == "ah" or card == "as":

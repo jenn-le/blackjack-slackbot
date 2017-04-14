@@ -17,15 +17,29 @@ class Admin(object):
                 # retrieve all users so we can add the desired ones to the players list
                 users = api_call.get('members')
                 for person in users:
-                    if 'name' in person and person.get('name') in command:
+                    if 'name' in person and person.get('name') == 'blackjack':
+                        exists = False
+                        for player in self.dealer.players:
+                            if player.get('name') == "blackjack":
+                                exists = True
+
+                        if exists == False:
+                            self.dealer.players.append({"name": "Dealer",
+                                                        "id": person.get('id'),
+                                                        "balance": 500,
+                                                        "bet": 50,
+                                                        "hand": [],
+                                                        "status": None,
+                                                        "hand_value": 0
+                                                        })
+
+                    elif 'name' in person and person.get('name') in command:
                         exists = False
                         for player in self.dealer.players:
 
                             # Send a message if the player is already in the list
                             if player.get('name') == person.get('name'):
-                                response = person.get('name') + " has already been added to the player list."
-                                self.slack_client.api_call("chat.postMessage", text=response,
-                                                            channel=user, as_user=True)
+                                self.dealer.message_user(person.get('name') + " has already been added to the player list.", user)
                                 exists = True
 
                         # If the player wasn't in the list, add them
@@ -39,9 +53,7 @@ class Admin(object):
                                                         "hand_value": 0
                                                         })
 
-                            response = person.get('name') + " has been added to the player list"
-                            self.slack_client.api_call("chat.postMessage", text=response,
-                                                        channel=user, as_user=True)
+                            self.dealer.message_user(person.get('name') + " has been added to the player list", user)
 
         def change_balance(self, command, user):
             response = "This person isn't in the player list"
@@ -63,35 +75,25 @@ class Admin(object):
             else:
                 response = "Enter in a valid number to change the balance by"
 
-            self.slack_client.api_call("chat.postMessage", text=response,
-                                        channel=user, as_user=True)
+            self.dealer.message_user(response, user)
 
         def normal(self, command, user):
             if self.dealer.hard == False:
-                response = "Game difficulty is already set to normal"
+                self.dealer.message_user("Game difficulty is already set to normal", user)
             else:
                 self.dealer.hard = False
-                response = "Game difficulty is now set to normal"
-
-            self.slack_client.api_call("chat.postMessage", text=response,
-                                        channel=user, as_user=True)
+                self.dealer.message_user("Game difficulty is now set to normal", user)
 
         def hard(self, command, user):
             if self.dealer.hard == True:
-                response = "Game difficulty is already set to hard"
+                self.dealerl.message_user("Game difficulty is already set to hard", user)
             else:
                 self.dealer.hard = True
-                response = "Game difficulty is now set to hard"
-
-            self.slack_client.api_call("chat.postMessage", text=response,
-                                        channel=user, as_user=True)
+                self.dealer.message_user("Game difficulty is now set to hard", user)
 
         def reset(self, command, user):
             self.dealer.reset()
-
-            response = "The game has been reset"
-            self.slack_client.api_call("chat.postMessage", text=response,
-                                        channel=user, as_user=True)
+            self.dealer.message_user("The game has been reset", user)
 
         # Calling the appropriate function
         actions = {"addplayer": addplayer,
