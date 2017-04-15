@@ -85,7 +85,7 @@ class Dealer(object):
                     self.message_user("Enter in a valid number to bet", user)
 
         def play(self, command, user, channel):
-            elif self.in_progress == True:
+            if self.in_progress == True:
                 self.message_user("Game already in progress", user)
             else:
                 # New deck for each hand
