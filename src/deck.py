@@ -36,6 +36,19 @@ class Deck(object):
     def draw(self):
         return self.cards.pop(randint(0, len(self.cards) - 1))
 
+    def odds_of_busting(self, value):
+        bad_cards = 0
+        for card in self.cards:
+            if self.values[card] > value:
+                bad_cards += 1
+
+        return (float(bad_cards/len(self.cards)) * 100)
+
+    def remove(self, card):
+        if card in self.cards:
+            self.cards.remove(card)
+        return
+
     def empty(self):
         if len(self.cards) == 0:
             return True

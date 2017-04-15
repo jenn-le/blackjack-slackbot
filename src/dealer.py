@@ -85,8 +85,6 @@ class Dealer(object):
                     self.message_user("Enter in a valid number to bet", user)
 
         def play(self, command, user, channel):
-            if len(command.split(' ')) != 1:
-                self.message_user("The play command doesn't take any arguments", user)
             elif self.in_progress == True:
                 self.message_user("Game already in progress", user)
             else:
@@ -217,13 +215,70 @@ class Dealer(object):
         ended = True
 
         for player in self.players:
-            if player.get('bet') != None:
+            if player.get('bet') != None and player.get('name') != "Dealer":
                 if player.get('bet') != None and player.get('status') == None:
                     ended = False
 
         if ended == True:
-            self.in_progress = False
-            self.message_channel("The hand has ended temp response")
+            self.end(self.hard)
+
+    def end(self, hard):
+        for player in self.players:
+            if player.get('name') == "Dealer":
+                while player.get('status') == None:
+                    decision = self.dealer_brain.calculate_decision(self.players, hard)
+
+                    if decision == 0:
+                        stay(None, "Dealer", player.get('id'))
+                    elif decision == 1:
+                        hit(None, "Dealer", player.get('id'))
+
+        self.show_table(True)
+        self.calculate_scores()
+        self.in_progress = False
+        for player in self.players:
+            if player.get('name') != "Dealer":
+                player['bet'] = None
+            player['hand'] = []
+            player['status'] = None
+            player['hand_value'] = 0
+
+    def calculate_scores(self):
+        for Dealer in self.players:
+            if Dealer.get('name') == "Dealer":
+                for player in self.players:
+                    if player.get('status') == "busted":
+                        player['balance'] -= player.get('bet')
+                        Dealer['balance'] += player.get('bet')
+                        self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
+                    # If the Dealer five-carded, then anyone that didn't, loses
+                    if (Dealer.get('status') == "five-card" and player.get('status') != "five-card") or
+                        (player.get('status') != "blackjack" and Dealer.get('status') == "blackjack")) or
+                        player.get('hand_value') <= Dealer.get('hand_value'):
+                        player['balance'] -= player.get('bet')
+                        Dealer['balance'] += player.get('bet')
+                        self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
+                    elif player.get('status') == "five-card":
+                        player['balance'] += player.get('bet') * 4
+                        Dealer['balance'] -= player.get('bet') * 4
+                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 4) + " coins")
+                    elif player.get('status') == "blackjack" and Dealer.get('status') != "blackjack":
+                        player['balance'] += player.get('bet') * 3
+                        Dealer['balance'] -= player.get('bet') * 3
+                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 3) + " coins")
+                    elif player.get('status') == "21" and Dealer.get('status') != "21":
+                        player['balance'] += player.get('bet') * 2
+                        Dealer['balance'] -= player.get('bet') * 2
+                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
+                    elif player.get('hand_value') > Dealer.get('hand_value'):
+                        player['balance'] += player.get('bet')
+                        Dealer['balance'] -= player.get('bet')
+                        self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
+                    else:
+                        self.message_channel(player.get('name') + " doesn't lose any coins")
+
+        self.message_channel("The hand is over. Make a bet to join the next hand")
+
 
     def message_channel(self, response):
         self.slack_client.api_call("chat.postMessage", text=response,

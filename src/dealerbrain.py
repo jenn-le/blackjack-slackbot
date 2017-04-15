@@ -37,3 +37,55 @@ class DealerBrain(object):
             response = "You've busted!"
 
         return value, status, response
+
+    def calculate_decision(self, players, hard):
+        fives = 0
+        fours = 0
+        twos = 0
+        num_players = 0
+        deck = Deck()
+
+        for player in players:
+            for card in player.get('hand'):
+                if card != player.get('hand')[1]:
+                    deck.remove(card)
+            if player.get('status') != None and player.get('bet') != None:
+                num_players += 1
+                if len(player.get('hand')) > 4:
+                    fives += 1
+                if len(player.get('hand')) == 4:
+                    fours += 1
+                if len(player.get('hand')) == 2:
+                    twos += 1
+
+        for player in players:
+            if player.get('name') == "Dealer":
+                odds = deck.odds_of_busting(player.get('hand_value'))
+
+                # Normal AI
+                if hard == False:
+                    if odds < 60:
+                        return 1
+                    else:
+                        return 0
+
+                # Hard AI
+                else:
+                    # Percent of players that prob got 17+
+                    stayed_at_2 = int(float(twos/num_players) * 100)
+                    # Percent of players that prob busted
+                    stayed_at_4 = int(float(fours/num_players) * 100)
+                    stayed_at_5 = int(float(five/num_players) * 100)
+                    if stayed_at_2 == 100 and player.get('hand_value') < 19:
+                        return 1
+                    if stayed_at_2 >= 50 and player.get('hand_value') < 18:
+                        if odds <= 65:
+                            return 1
+                        elif stayed_at_2 < 70:
+                            if odds <= 65:
+                                return 1
+                    if stayed_at_4 > 50:
+                        if fives > 0 and odds < 70 and num_players < 5:
+                            return 1
+                        else:
+                            return 0
