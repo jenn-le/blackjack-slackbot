@@ -28,7 +28,7 @@ class DealerBrain(object):
             response = "You got blackjack!"
         elif value <= 21 and len(hand) == 5:
             status = "five-card"
-            response = "You've five-carded'!"
+            response = "You've five-carded!"
         elif value == 21:
             status = "21"
             response = "You got 21!"

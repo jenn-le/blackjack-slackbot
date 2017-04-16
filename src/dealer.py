@@ -188,15 +188,11 @@ class Dealer(object):
 
     # Show indicated player's hand
     def show_hand(self, player, title, channel, show_all):
-        fallback = ""
-        for card in player.get('hand'):
-            fallback += card + " "
-
         temp_hand = player.get('hand')[:]
         if show_all == False:
             temp_hand[1] = "back"
 
-        hand = [{"fallback": fallback,
+        hand = [{"fallback": player.get('name') + "'s hand'",
                 "title": title,
                 "image_url": handImage(temp_hand)
                }]
@@ -229,9 +225,9 @@ class Dealer(object):
                     decision = self.dealer_brain.calculate_decision(self.players, hard)
 
                     if decision == 0:
-                        stay(None, "Dealer", player.get('id'))
+                        self.stay(None, "Dealer", player.get('id'))
                     elif decision == 1:
-                        hit(None, "Dealer", player.get('id'))
+                        self.hit(None, "Dealer", player.get('id'))
 
         self.show_table(True)
         self.calculate_scores()
