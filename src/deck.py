@@ -39,7 +39,7 @@ class Deck(object):
     def odds_of_busting(self, value):
         bad_cards = 0
         for card in self.cards:
-            if card != "ac" or card != "ad" or card != "ah" or card != "as":
+            if card != "ac" and card != "ad" and card != "ah" and card != "as":
                 if self.values[card] > value:
                     bad_cards += 1
 
