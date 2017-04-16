@@ -13,7 +13,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": person.get('id'),
+                             "id": "U4TS5RXU3",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],
@@ -300,7 +300,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": person.get('id'),
+                             "id": "U4TS5RXU3",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],
