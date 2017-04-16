@@ -39,8 +39,9 @@ class Deck(object):
     def odds_of_busting(self, value):
         bad_cards = 0
         for card in self.cards:
-            if self.values[card] > value:
-                bad_cards += 1
+            if card != "ac" or card != "ad" or card != "ah" or card != "as":
+                if self.values[card] > value:
+                    bad_cards += 1
 
         return (float(bad_cards/len(self.cards)) * 100)
 
