@@ -244,33 +244,34 @@ class Dealer(object):
         for Dealer in self.players:
             if Dealer.get('name') == "Dealer":
                 for player in self.players:
-                    if player.get('status') == "busted":
-                        player['balance'] -= player.get('bet')
-                        Dealer['balance'] += player.get('bet')
-                        self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
-                    # If the Dealer five-carded, then anyone that didn't, loses
-                    if self.is_loss(player, Dealer):
-                        player['balance'] -= player.get('bet')
-                        Dealer['balance'] += player.get('bet')
-                        self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
-                    elif player.get('status') == "five-card":
-                        player['balance'] += player.get('bet') * 4
-                        Dealer['balance'] -= player.get('bet') * 4
-                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 4) + " coins")
-                    elif player.get('status') == "blackjack" and Dealer.get('status') != "blackjack":
-                        player['balance'] += player.get('bet') * 3
-                        Dealer['balance'] -= player.get('bet') * 3
-                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 3) + " coins")
-                    elif player.get('status') == "21" and Dealer.get('status') != "21":
-                        player['balance'] += player.get('bet') * 2
-                        Dealer['balance'] -= player.get('bet') * 2
-                        self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
-                    elif player.get('hand_value') > Dealer.get('hand_value'):
-                        player['balance'] += player.get('bet')
-                        Dealer['balance'] -= player.get('bet')
-                        self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
-                    else:
-                        self.message_channel(player.get('name') + " doesn't lose any coins")
+                    if player.get('name') != "Dealer":
+                        if player.get('status') == "busted":
+                            player['balance'] -= player.get('bet')
+                            Dealer['balance'] += player.get('bet')
+                            self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
+                        # If the Dealer five-carded, then anyone that didn't, loses
+                        if self.is_loss(player, Dealer):
+                            player['balance'] -= player.get('bet')
+                            Dealer['balance'] += player.get('bet')
+                            self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
+                        elif player.get('status') == "five-card":
+                            player['balance'] += player.get('bet') * 4
+                            Dealer['balance'] -= player.get('bet') * 4
+                            self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 4) + " coins")
+                        elif player.get('status') == "blackjack" and Dealer.get('status') != "blackjack":
+                            player['balance'] += player.get('bet') * 3
+                            Dealer['balance'] -= player.get('bet') * 3
+                            self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 3) + " coins")
+                        elif player.get('status') == "21" and Dealer.get('status') != "21":
+                            player['balance'] += player.get('bet') * 2
+                            Dealer['balance'] -= player.get('bet') * 2
+                            self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
+                        elif player.get('hand_value') > Dealer.get('hand_value'):
+                            player['balance'] += player.get('bet')
+                            Dealer['balance'] -= player.get('bet')
+                            self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
+                        else:
+                            self.message_channel(player.get('name') + " doesn't lose any coins")
 
         self.message_channel("The hand is over. Make a bet to join the next hand")
 

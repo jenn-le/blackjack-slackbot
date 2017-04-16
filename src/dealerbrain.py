@@ -61,10 +61,11 @@ class DealerBrain(object):
         for player in players:
             if player.get('name') == "Dealer":
                 odds = deck.odds_of_busting(player.get('hand_value'))
+                print(odds)
 
                 # Normal AI
                 if hard == False:
-                    if odds < 60:
+                    if odds <= 50:
                         return 1
                     else:
                         return 0
