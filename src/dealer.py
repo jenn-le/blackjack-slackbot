@@ -12,6 +12,14 @@ class Dealer(object):
         self.dealer_brain = DealerBrain()
         self.deck = Deck()
         self.players = []
+        self.players.append({"name": "Dealer",
+                             "id": person.get('id'),
+                             "balance": 500,
+                             "bet": 50,
+                             "hand": [],
+                             "status": None,
+                             "hand_value": 0
+                             })
         self.in_progress = False
         self.hard = False
         self.main_channel = "C4TTHACG5"
@@ -291,5 +299,13 @@ class Dealer(object):
     def reset(self):
         self.deck = Deck()
         self.players = []
+        self.players.append({"name": "Dealer",
+                             "id": person.get('id'),
+                             "balance": 500,
+                             "bet": 50,
+                             "hand": [],
+                             "status": None,
+                             "hand_value": 0
+                             })
         self.in_progress = False
         self.hard = False

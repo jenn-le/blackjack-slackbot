@@ -43,7 +43,7 @@ class Deck(object):
                 if self.values[card] > value:
                     bad_cards += 1
 
-        return (float(bad_cards/len(self.cards)) * 100)
+        return int(float(float(bad_cards)/float(len(self.cards))) * 100)
 
     def remove(self, card):
         if card in self.cards:

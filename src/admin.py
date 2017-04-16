@@ -17,23 +17,7 @@ class Admin(object):
                 # retrieve all users so we can add the desired ones to the players list
                 users = api_call.get('members')
                 for person in users:
-                    if 'name' in person and person.get('name') == 'blackjack':
-                        exists = False
-                        for player in self.dealer.players:
-                            if player.get('name') == "blackjack":
-                                exists = True
-
-                        if exists == False:
-                            self.dealer.players.append({"name": "Dealer",
-                                                        "id": person.get('id'),
-                                                        "balance": 500,
-                                                        "bet": 50,
-                                                        "hand": [],
-                                                        "status": None,
-                                                        "hand_value": 0
-                                                        })
-
-                    elif 'name' in person and person.get('name') in command:
+                    if 'name' in person and person.get('name') in command:
                         exists = False
                         for player in self.dealer.players:
 
