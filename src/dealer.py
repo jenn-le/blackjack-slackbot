@@ -252,9 +252,7 @@ class Dealer(object):
                         Dealer['balance'] += player.get('bet')
                         self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
                     # If the Dealer five-carded, then anyone that didn't, loses
-                    if (Dealer.get('status') == "five-card" and player.get('status') != "five-card"
-                        or player.get('status') != "blackjack" and Dealer.get('status') == "blackjack")
-                        or player.get('hand_value') <= Dealer.get('hand_value')):
+                    if self.is_loss(player, Dealer):
                         player['balance'] -= player.get('bet')
                         Dealer['balance'] += player.get('bet')
                         self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
@@ -279,6 +277,10 @@ class Dealer(object):
 
         self.message_channel("The hand is over. Make a bet to join the next hand")
 
+    def is_loss(self, player, Dealer):
+        return ( Dealer.get('status') == "five-card" and player.get('status') != "five-card"
+            or player.get('status') != "blackjack" and Dealer.get('status') == "blackjack"
+            or player.get('hand_value') <= Dealer.get('hand_value') )
 
     def message_channel(self, response):
         self.slack_client.api_call("chat.postMessage", text=response,
