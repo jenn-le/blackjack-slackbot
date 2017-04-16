@@ -166,6 +166,38 @@ class Dealer(object):
 
         actions[command.split(' ', 1)[0]](self, command, user, channel)
 
+        def check_end(self):
+            ended = True
+
+            for player in self.players:
+                if player.get('bet') != None and player.get('name') != "Dealer":
+                    if player.get('bet') != None and player.get('status') == None:
+                        ended = False
+
+            if ended == True:
+                self.end(self.hard)
+
+        def end(self, hard):
+            for player in self.players:
+                if player.get('name') == "Dealer":
+                    while player.get('status') == None:
+                        decision = self.dealer_brain.calculate_decision(self.players, hard)
+
+                        if decision == 0:
+                            self.stay(None, "Dealer", player.get('id'))
+                        elif decision == 1:
+                            self.hit(None, "Dealer", player.get('id'))
+
+            self.show_table(True)
+            self.calculate_scores()
+            self.in_progress = False
+            for player in self.players:
+                if player.get('name') != "Dealer":
+                    player['bet'] = None
+                player['hand'] = []
+                player['status'] = None
+                player['hand_value'] = 0
+
     # Deals first two cards to each player that has made a bet and sends the necessary messages
     def deal(self):
         for player in self.players:
@@ -206,38 +238,6 @@ class Dealer(object):
         for player in self.players:
             if player.get('bet') != None:
                 self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, end)
-
-    def check_end(self):
-        ended = True
-
-        for player in self.players:
-            if player.get('bet') != None and player.get('name') != "Dealer":
-                if player.get('bet') != None and player.get('status') == None:
-                    ended = False
-
-        if ended == True:
-            self.end(self.hard)
-
-    def end(self, hard):
-        for player in self.players:
-            if player.get('name') == "Dealer":
-                while player.get('status') == None:
-                    decision = self.dealer_brain.calculate_decision(self.players, hard)
-
-                    if decision == 0:
-                        self.stay(None, "Dealer", player.get('id'))
-                    elif decision == 1:
-                        self.hit(None, "Dealer", player.get('id'))
-
-        self.show_table(True)
-        self.calculate_scores()
-        self.in_progress = False
-        for player in self.players:
-            if player.get('name') != "Dealer":
-                player['bet'] = None
-            player['hand'] = []
-            player['status'] = None
-            player['hand_value'] = 0
 
     def calculate_scores(self):
         for Dealer in self.players:
