@@ -21,7 +21,8 @@ class DealerBrain(object):
                 value += 11
                 ace_count -= 1
             else:
-                value += ace_count * 11
+                value += ace_count * 1
+                ace_count = 0
 
         if value == 21 and len(hand) == 2:
             status = "blackjack"
