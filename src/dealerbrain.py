@@ -17,8 +17,8 @@ class DealerBrain(object):
                 value += self.deck.values[card]
 
         while(ace_count > 0):
-            if value + (ace_count * 11) > 21:
-                value += 1
+            if value + 11 <= 21:
+                value += 11
                 ace_count -= 1
             else:
                 value += ace_count * 11
@@ -67,7 +67,7 @@ class DealerBrain(object):
 
                 # Normal AI
                 if hard == False:
-                    if odds <= 50:
+                    if odds <= 65:
                         return 1
                     else:
                         return 0
