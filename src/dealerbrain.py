@@ -80,7 +80,7 @@ class DealerBrain(object):
                     # Percent of players that prob busted
                     stayed_at_4 = int(float(fours/num_players) * 100)
                     stayed_at_5 = int(float(fives/num_players) * 100)
-                    if stayed_at_2 == 100 and player.get('hand_value') < 19:
+                    if stayed_at_2 == 100 and player.get('hand_value') < 18:
                         return 1
                     if stayed_at_2 >= 50 and player.get('hand_value') < 18:
                         if odds <= 65:
