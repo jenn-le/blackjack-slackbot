@@ -274,7 +274,7 @@ class Dealer(object):
                             player['balance'] += player.get('bet') * 2
                             Dealer['balance'] -= player.get('bet') * 2
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
-                        elif player.get('hand_value') > Dealer.get('hand_value'):
+                        elif player.get('hand_value') > Dealer.get('hand_value') or Dealer.get('status') != "busted":
                             player['balance'] += player.get('bet')
                             Dealer['balance'] -= player.get('bet')
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
