@@ -221,7 +221,7 @@ class Dealer(object):
         self.message_channel("*The current table:*")
         for player in self.players:
             if player.get('bet') != None:
-                self.show_hand(player, player.get('name') + "'s hand'", self.main_channel, end)
+                self.show_hand(player, player.get('name') + "'s hand", self.main_channel, end)
 
     def check_end(self):
         ended = True
