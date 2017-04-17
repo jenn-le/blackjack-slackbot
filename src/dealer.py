@@ -277,7 +277,7 @@ class Dealer(object):
                             player['balance'] += player.get('bet') * 2
                             Dealer['balance'] -= player.get('bet') * 2
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
-                        elif :
+                        elif self.is_win(player, Dealer):
                             player['balance'] += player.get('bet')
                             Dealer['balance'] -= player.get('bet')
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
@@ -292,7 +292,7 @@ class Dealer(object):
             or player.get('hand_value') < Dealer.get('hand_value') and Dealer.get('status') != "busted"
             or player.get('status') == "busted" )
 
-    def is_loss(self, player, Dealer):
+    def is_win(self, player, Dealer):
         return ( player.get('hand_value') > Dealer.get('hand_value') and Dealer.get('status') != "busted"
                  or player.get('status') != "busted" and Dealer.get('status') == "busted")
 
