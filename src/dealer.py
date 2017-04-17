@@ -148,9 +148,12 @@ class Dealer(object):
                     self.show_hand(player, "Your hand", player.get('id'), True)
                     player['status'] = "stayed"
 
-                    player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
+                    player['hand_value'], status, response = self.dealer_brain.calculate_value(player.get('hand'))
+                    if status != None:
+                        player['status'] = status
                     if response != None:
                         self.message_user(response, user)
+
             self.check_end()
 
         def stay(self, command, user, channel):
