@@ -46,21 +46,24 @@ class DealerBrain(object):
         deck = Deck()
 
         for player in players:
-            for card in player.get('hand'):
-                if card != player.get('hand')[1]:
-                    deck.remove(card)
-            if player.get('status') != None and player.get('bet') != None:
-                num_players += 1
-                if len(player.get('hand')) > 4:
-                    fives += 1
-                if len(player.get('hand')) == 4:
-                    fours += 1
-                if len(player.get('hand')) == 2:
-                    twos += 1
+            if player.get('name') != "Dealer":
+                for card in player.get('hand'):
+                    if card != player.get('hand')[1]:
+                        deck.remove(card)
+                if player.get('status') != None and player.get('bet') != None:
+                    num_players += 1
+                    if len(player.get('hand')) > 4:
+                        fives += 1
+                    if len(player.get('hand')) == 4:
+                        fours += 1
+                    if len(player.get('hand')) == 2:
+                        twos += 1
 
         for player in players:
             if player.get('name') == "Dealer":
-                odds = deck.odds_of_busting(player.get('hand_value'))
+                for card in player.get('hand'):
+                    deck.remove(card)
+                odds = deck.odds_of_busting(21 - player.get('hand_value'))
                 print(deck.cards)
                 print(odds)
 
