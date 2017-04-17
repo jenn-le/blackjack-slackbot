@@ -39,9 +39,9 @@ class DealerBrain(object):
         return value, status, response
 
     def calculate_decision(self, players, hard):
-        fives = []
-        fours = []
-        twos = []
+        fives = 0
+        fours = 0
+        twos = 0
         num_players = 0
         deck = Deck()
 
@@ -53,11 +53,11 @@ class DealerBrain(object):
                 if player.get('status') != None and player.get('bet') != None:
                     num_players += 1
                     if len(player.get('hand')) > 4:
-                        fives.append(player)
+                        fives += 1
                     if len(player.get('hand')) == 4:
-                        fours.append(player)
+                        fours += 1
                     if len(player.get('hand')) == 2:
-                        twos.append(player)
+                        twos += 1
 
         for player in players:
             if player.get('name') == "Dealer":
@@ -75,10 +75,10 @@ class DealerBrain(object):
                 # Hard AI
                 else:
                     # Percent of players that prob got 17+
-                    stayed_at_2 = int(float(len(twos)/num_players) * 100)
+                    stayed_at_2 = int(float(twos/num_players) * 100)
                     # Percent of players that prob busted
-                    stayed_at_4 = int(float(len(fours)/num_players) * 100)
-                    stayed_at_5 = int(float(len(fives)/num_players) * 100)
+                    stayed_at_4 = int(float(fours/num_players) * 100)
+                    stayed_at_5 = int(float(fives/num_players) * 100)
                     if stayed_at_2 == 100 and player.get('hand_value') < 19:
                         return 1
                     if stayed_at_2 >= 50 and player.get('hand_value') < 18:

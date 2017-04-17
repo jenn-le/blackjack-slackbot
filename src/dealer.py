@@ -208,7 +208,7 @@ class Dealer(object):
         if show_all == False:
             temp_hand[1] = "back"
 
-        hand = [{"fallback": player.get('name') + "'s hand'",
+        hand = [{"fallback": player.get('name') + "'s hand",
                 "title": title,
                 "image_url": handImage(temp_hand)
                }]
