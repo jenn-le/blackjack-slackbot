@@ -294,7 +294,7 @@ class Dealer(object):
 
     def is_win(self, player, Dealer):
         return ( player.get('hand_value') > Dealer.get('hand_value') and Dealer.get('status') != "busted"
-                 or player.get('status') != "busted" and Dealer.get('status') == "busted")
+                 or ( player.get('status') != "busted" and Dealer.get('status') == "busted" ))
 
     def message_channel(self, response):
         self.slack_client.api_call("chat.postMessage", text=response,

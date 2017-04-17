@@ -64,8 +64,6 @@ class DealerBrain(object):
                 for card in player.get('hand'):
                     deck.remove(card)
                 odds = deck.odds_of_busting(21 - player.get('hand_value'))
-                print(deck.cards)
-                print(odds)
 
                 # Normal AI
                 if hard == False:
