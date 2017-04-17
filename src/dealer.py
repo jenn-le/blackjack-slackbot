@@ -215,6 +215,8 @@ class Dealer(object):
 
         self.slack_client.api_call("chat.postMessage", attachments=hand,
                                     channel=channel, as_user=True)
+        print(player.get('hand_value'))
+        print(player.get('status'))
 
     # Shows the hands of everyone, hides the 2nd card if it is not the end of the hand
     def show_table(self, end):
