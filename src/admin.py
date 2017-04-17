@@ -87,4 +87,5 @@ class Admin(object):
                    "reset": reset
                   }
 
-        actions[command.split(' ')[1]](self, command, user)
+        if command.split(' ')[1] in actions:
+            actions[command.split(' ')[1]](self, command, user)
