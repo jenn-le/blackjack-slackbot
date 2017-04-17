@@ -277,7 +277,7 @@ class Dealer(object):
                             player['balance'] += player.get('bet') * 2
                             Dealer['balance'] -= player.get('bet') * 2
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 2) + " coins")
-                        elif player.get('hand_value') > Dealer.get('hand_value') or Dealer.get('status') != "busted":
+                        elif :
                             player['balance'] += player.get('bet')
                             Dealer['balance'] -= player.get('bet')
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet')) + " coins")
@@ -291,6 +291,10 @@ class Dealer(object):
             or (player.get('status') != "blackjack" and Dealer.get('status') == "blackjack")
             or player.get('hand_value') < Dealer.get('hand_value') and Dealer.get('status') != "busted"
             or player.get('status') == "busted" )
+
+    def is_loss(self, player, Dealer):
+        return ( player.get('hand_value') > Dealer.get('hand_value') and Dealer.get('status') != "busted"
+                 or player.get('status') != "busted" and Dealer.get('status') == "busted")
 
     def message_channel(self, response):
         self.slack_client.api_call("chat.postMessage", text=response,
