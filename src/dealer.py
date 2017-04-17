@@ -144,8 +144,9 @@ class Dealer(object):
                     player.get('hand').append(self.deck.draw())
                     player['bet'] = player.get('bet') * 2
 
-                    self.message_user("Your bet is now " + str(bet) + " coins", user)
+                    self.message_user("Your bet is now " + str(player.get('bet')) + " coins", user)
                     self.show_hand(player, "Your hand", player.get('id'), True)
+                    player['status'] = "stayed"
 
                     player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
                     if response != None:
