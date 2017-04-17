@@ -191,7 +191,7 @@ class Dealer(object):
 
                 player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
                 if response != None:
-                    self.message_user(response, user)
+                    self.message_user(response, player.get('id'))
                 self.show_hand(player, "Your hand", player.get('id'), True)
 
         self.check_end()
