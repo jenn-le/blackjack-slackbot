@@ -190,7 +190,11 @@ class Dealer(object):
                 player.get('hand').append(self.deck.draw())
 
                 player['hand_value'], player['status'], response = self.dealer_brain.calculate_value(player.get('hand'))
+                if response != None:
+                    self.message_user(response, user)
                 self.show_hand(player, "Your hand", player.get('id'), True)
+
+        self.check_end()
 
         # After dealing each player their hand, show the entire table
         self.show_table(False)
@@ -258,7 +262,7 @@ class Dealer(object):
                             player['balance'] -= player.get('bet')
                             Dealer['balance'] += player.get('bet')
                             self.message_channel(player.get('name') + " loses " + str(player.get('bet')) + " coins")
-                        elif player.get('status') == "five-card":
+                        elif player.get('status') == "five-card" and Dealer.get('status') != "five-card":
                             player['balance'] += player.get('bet') * 4
                             Dealer['balance'] -= player.get('bet') * 4
                             self.message_channel(player.get('name') + " wins " + str(player.get('bet') * 4) + " coins")
@@ -280,9 +284,10 @@ class Dealer(object):
         self.message_channel("The hand is over. Make a bet to join the next hand")
 
     def is_loss(self, player, Dealer):
-        return ( Dealer.get('status') == "five-card" and player.get('status') != "five-card"
-            or player.get('status') != "blackjack" and Dealer.get('status') == "blackjack"
-            or player.get('hand_value') <= Dealer.get('hand_value') or player.get('status') == "busted" )
+        return ( (Dealer.get('status') == "five-card" and player.get('status') != "five-card")
+            or (player.get('status') != "blackjack" and Dealer.get('status') == "blackjack")
+            or player.get('hand_value') < Dealer.get('hand_value') and Dealer.get('status') != "busted"
+            or player.get('status') == "busted" )
 
     def message_channel(self, response):
         self.slack_client.api_call("chat.postMessage", text=response,
