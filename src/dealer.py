@@ -13,7 +13,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": "U4TS5RXU3",
+                             "id": "DEALER_ID",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],
@@ -22,7 +22,7 @@ class Dealer(object):
                              })
         self.in_progress = False
         self.hard = False
-        self.main_channel = "C4TTHACG5"
+        self.main_channel = "CHANNEL_ID"
         self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # The calling the general game functions
@@ -308,7 +308,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": "U4TS5RXU3",
+                             "id": "DEALER_ID",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],

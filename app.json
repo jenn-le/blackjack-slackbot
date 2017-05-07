@@ -1,0 +1,5 @@
+{
+  "name": "Blackjack Slack Bot",
+  "description": "A slackbot that allows people in the channel to play blackjack",
+  "repository": "https://github.com/Thakugan/BlackjackSlackbot"
+}
