@@ -3,6 +3,7 @@ import os
 import pyimgur
 from PIL import Image
 
+
 def handImage(ims):
     CLIENT_ID = "fa37e007405ff2d"
     pyim = pyimgur.Imgur(CLIENT_ID)
@@ -20,13 +21,14 @@ def handImage(ims):
 
     x_offset = 0
     for im in images:
-        new_im.paste(im, (x_offset,0))
+        new_im.paste(im, (x_offset, 0))
         x_offset += im.size[0]
 
     new_im.save('assets/hand.png')
 
     PATH = "assets/hand.png"
-    uploaded_image = pyim.upload_image(PATH, title="Blackjeck Hand Uploaded with PyImgur")
+    uploaded_image = pyim.upload_image(
+        PATH, title="Blackjeck Hand Uploaded with PyImgur")
     os.remove('assets/hand.png')
 
     return uploaded_image.link

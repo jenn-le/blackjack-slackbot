@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  casinobot:
+    build: .
+    stdin_open: true
+    links:
+     - casino-db
+    ports:
+     - 3000:3000
+
+  casino-db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/data/db
