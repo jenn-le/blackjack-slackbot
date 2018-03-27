@@ -5,9 +5,11 @@ services:
     build: .
     stdin_open: true
     links:
-     - casino-db
+      - casino-db
     ports:
-     - 3000:3000
+      - 3000:3000
+    env_file:
+      - ./.env
 
   casino-db:
     image: mongo

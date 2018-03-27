@@ -24,4 +24,5 @@ def set_bot_id():
 
 
 if __name__ == "__main__":
+    print(os.environ.get('SLACK_BOT_TOKEN'))
     set_bot_id()
