@@ -1,3 +1,4 @@
 .git
 .env
 assets/save.txt
+db/
