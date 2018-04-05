@@ -1,10 +1,9 @@
 import os
 import time
+from classes.gamemaker import GameMaker
 from helper.handle_command import handle_command
-from slackclient import SlackClient
 
-# instantiate Slack
-slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+gm = GameMaker()
 
 
 def parse_slack_output(slack_rtm_output):
@@ -22,13 +21,13 @@ def parse_slack_output(slack_rtm_output):
 def main():
     READ_WEBSOCKET_DELAY = 1  # 1 second delay between reading from firehose
 
-    if slack_client.rtm_connect():
+    if gm.slack_client.rtm_connect():
         print("Casino Bot connected and running!")
         while True:
             command, user, channel = parse_slack_output(
-                slack_client.rtm_read())
+                gm.slack_client.rtm_read())
             if command and channel:
-                handle_command(slack_client, command, user, channel)
+                handle_command(gm, command, user, channel)
             time.sleep(READ_WEBSOCKET_DELAY)
     else:
         print("Connection failed. Invalid Slack token or bot ID?")

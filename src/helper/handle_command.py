@@ -1,4 +1,11 @@
-def handle_command(slack_client, command, user, channel):
-    response = "You said: " + command
-    slack_client.api_call("chat.postMessage", channel=channel,
-                          text=response, as_user=True)
+import os
+
+gm_commands = {
+
+}
+
+
+def handle_command(gm, command, user, channel):
+    if user != os.environ.get('BOT_ID'):
+        response = user + " said: " + command + " in channel: " + channel
+        gm.send_message(response, channel)

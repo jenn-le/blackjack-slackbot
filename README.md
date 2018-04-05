@@ -14,5 +14,6 @@ installed it. It should be under installed app settings.
 
 This app can be deployed anywhere with docker and docker-compose. Just run the following commands within the top-level folder.
 
-`docker-compose up -d` - Starts the bot
-`docker-compose run casinobot python set_slack_info.py` - This only needs to be run the first time, it finds and stores all the info the bot needs
+`docker build -t casinobot .` - Builds the docker image if you want to make any changes, otherwise you can just use the next command
+
+`docker run --env-file .env --name casinobot thakugan/casinobot` - Creates and runs a container named 'casinobot' using the image located at 'thakugan/casinobot'. If you had built a different image, just replace it here.
