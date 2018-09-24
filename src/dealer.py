@@ -1,9 +1,8 @@
 import os
 import re
-import json
 from slackclient import SlackClient
 from deck import Deck
-from image_manager import handImage
+from src.image_manager import handImage
 from dealerbrain import DealerBrain
 
 class Dealer(object):
@@ -13,7 +12,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": "DEALER_ID",
+                             "id": "U4TS5RXU3",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],
@@ -22,7 +21,7 @@ class Dealer(object):
                              })
         self.in_progress = False
         self.hard = False
-        self.main_channel = "CHANNEL_ID"
+        self.main_channel = "C4TTHACG5"
         self.slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 
     # The calling the general game functions
@@ -308,7 +307,7 @@ class Dealer(object):
         self.deck = Deck()
         self.players = []
         self.players.append({"name": "Dealer",
-                             "id": "DEALER_ID",
+                             "id": "U4TS5RXU3",
                              "balance": 500,
                              "bet": 50,
                              "hand": [],

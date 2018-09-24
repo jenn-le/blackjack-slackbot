@@ -12,6 +12,10 @@ blackjack_actions = ['!show',
                      '!double',
                      '!stay']
 
+
+# admin user ids
+admin_ids = [os.environ.get('ADMIN_ID')]
+
 # instantiate the dealer
 dealer = Dealer()
 admin = Admin(dealer)
@@ -22,7 +26,7 @@ slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 def handle_command(command, user, channel):
     # Admin commands that only I can send
     if command.split(' ', 1)[0] == "!admin":
-        if user == 'ADMIN_ID':
+        if user in admin_ids:
             admin.admin_do(command, user)
         else:
             response = "You do not have permission to execute this command"
