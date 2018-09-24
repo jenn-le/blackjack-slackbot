@@ -23,4 +23,16 @@ This app can be deployed anywhere with docker and docker-compose. Just run the f
 
 ### General
 
-`join [game]`: This adds you to the player list for the specified game. At this point, follow the prompts to play.
+`!show [scoreboard/hand/balance]`: Displays the scoreboard in the desired channel or your hand in your DMs with blackjack
+
+`!bet [num of coins]`: Placing a bet tells blackjack that you’re in on the next hand
+
+`!play`: Once every player that wants to play has placed their bet, type this command to start the hand. At this point, blackjack will send each player their hands and send the entire table to the main channel
+
+`!hit`: Asks blackjack to deal you another card
+
+`!double`: This command is to double down. That means you will double your bet and stay after blackjack deals you one other card. This command can only be called during the first turn
+
+`!stay`: If you are happy with your hand, tell blackjack that you are done for this hand
+
+Once every player has either busted or stayed, blackjack will announce the results of the hand in the main channel
