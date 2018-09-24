@@ -1,6 +1,6 @@
 # Blackjack Slackbot
-
-This project was reverted to working state with the docker updates because I won't be working on it anymore.
+anymore
+This project was reverted to working state with the docker updates so I have an easier time refactoring.
 
 ## Environment Variables
 
