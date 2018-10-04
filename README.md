@@ -1,5 +1,4 @@
 # Blackjack Slackbot
-anymore
 This project was reverted to working state with the docker updates so I have an easier time refactoring.
 
 ## Environment Variables
